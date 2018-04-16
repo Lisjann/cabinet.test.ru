@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Кабинет Оптовика{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <!-- mobile viewport optimisation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    
+    <!--link href="{{ asset('bundles/cabinet/css/yaml/core/base.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/forms/gray-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/screen/typography.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/navigation/hlist.css') }}" rel="stylesheet"-->
+    <link href="{{ asset('bundles/cabinet/css/nouislider.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+	<link href="{{ asset('bundles/cabinet/bootstrap/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    
+	<link href="{{ asset('bundles/cabinet/css/project.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/jquery.ui.theme.css') }}" rel="stylesheet">
+    <!--link href="{{ asset('bundles/cabinet/css/jquery.ui.datepicker.css') }}" rel="stylesheet"-->
+    <!--link href="{# asset('bundles/cabinet/css/fancybox/jquery.fancybox-1.3.4.css') #}" rel="stylesheet"-->
+	 <link href="{{ asset('bundles/cabinet/bootstrap/css/ekko-lightbox.css') }}" rel="stylesheet">
+
+
+    <!--script src="{{ asset('bundles/cabinet/js/lib/jquery-1.7.2.min.js')}}"></script-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>	
+    <script src="{{ asset('bundles/cabinet/js/lib/jquery.nouislider.js')}}"></script>
+    <script src="{{ asset('bundles/cabinet/js/lib/jquery.ui.core.js')}}"></script>
+    <!--script src="{{ asset('bundles/cabinet/js/lib/jquery.ui.datepicker.js')}}"></script-->
+    
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/moment-with-locales.min.js') }}"></script>
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/bootstrap.js') }}"></script>
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/ekko-lightbox.js') }}"></script>
+
+	<script src="{{ asset('bundles/cabinet/js/autoload.js')}}"></script>
+    <!--script src="{# asset('bundles/cabinet/js/fancybox/jquery.fancybox-1.3.4.js')#}"></script-->
+	
+	{% block javascript %}
+	{% endblock %}
+
+
+
+    <!--[if lte IE 7]>
+		<link rel="stylesheet" href="{{ asset('bundles/cabinet/css/yaml/core/iehacks.min.css') }}" type="text/css"/>
+	<![endif]-->
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	<!-- Yandex.Metrika counter -->
+	<script type="text/javascript">
+		 (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter40907444 = new Ya.Metrika({ id:40907444, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); 
+	</script>
+	<!-- /Yandex.Metrika counter -->
+
+</head>
+<body class="bodyv-xs">
+    <!--div id="site_close">Сайт закрыт, ведуться внутренние работы</div-->
+	<header>
+		<nav class="navbar navbar-default hidden-xs logo" role="navigation" style="background-color:#fb6d01">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="{{ path('top10_cabinet_default_index') }}">
+						<img src="http://tochka-market.ru/images/tm_white.png{# asset('bundles/cabinet/images/logo.jpg')#}" width="198" height="29" alt="" />
+					</a>
+					<a class="navbar-brand logo-ko" href="{{ path('top10_cabinet_default_index') }}">
+						Кабинет оптовика
+					</a>
+				</div>
+			</div>
+        </nav>
+{# меню для мобильных #}
+		<nav class="navbar navbar-default navbar-fixed-top hidden-sm hidden-md hidden-lg topmenu-xs" role="navigation">
+			<div class="navbar-header row">
+				<div class="col-xs-2">
+					<a class="navbar-brand " href="{{ path('top10_cabinet_default_index') }}">KO</a>
+				</div>
+				<div class="col-xs-5">
+					<form class="search" method="GET" action="{{ path('catalog_article') }}">
+						<div class="input-group">
+							<input type="text" name="article" id="article" class="form-control" placeholder="Поиск по артикулу"/>
+							<span class="input-group-btn" >
+								<button 
+									class="btn btn-default" 
+									type="submit"
+									onclick="yaCounter40907444.reachGoal('searchstring'); return true;"
+								>
+									<span class="glyphicon glyphicon-search"></span>
+								</button>
+							</span>
+						</div>
+					</form>
+				</div>
+				<div class="col-xs-3 cart-header">
+					{% include 'Top10CabinetBundle:Default:fixed_cart_mobile.html.twig' %}
+				</div>
+				<div class="col-xs-2">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+			</div>
+
+			<div class=" navbar-collapse collapse">
+				<div class="panel-body">
+					<ul class="nav navbar-nav">
+						<li><a href="{{ path('catalog_index', {'f[type]':'disk'}) }}">Каталог дисков</a></li>
+						<li><a href="{{ path('catalog_index', {'f[type]':'tire'}) }}">Каталог шин</a></li>
+					</ul>
+				</div>
+				<div class="panel-body">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="{{ path('fos_user_profile_show') }}">{{app.user.FullName ? app.user.FullName : app.user.username}}</a></li>
+						<li><a href="{{ path('orders', {'ordertype':'disk'} ) }}">Заказы Диски</a></li>
+						<li><a href="{{ path('orders', {'ordertype':'tire'} ) }}">Заказы Шины</a></li>
+						<li><a href="{{ path('reserve_index') }}">Резервы</a></li>
+						<li><a href="{{ path('payment') }}">График платежей</a></li>
+						<li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+{# /меню для мобильных #}
+
+
+
+{# меню для больших разрешений #}
+		<nav class="navbar navbar-default hidden-xs" role="navigation" style="background-color:#ffe63b">
+			<div class="container-fluid">
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="hidden-sm hidden-xs"><a href="{{ path('catalog_index', {'f[type]':'disk'}) }}">Каталог дисков</a></li>
+						<li class="hidden-sm hidden-xs"><a href="{{ path('catalog_index', {'f[type]':'tire'}) }}">Каталог шин</a></li>
+
+						<li class="dropdown hidden-md hidden-lg topmenu-xs">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								Каталог <b class="caret"></b></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ path('catalog_index', {'f[type]':'disk'}) }}">Каталог дисков</a></li>
+								<li><a href="{{ path('catalog_index', {'f[type]':'tire'}) }}">Каталог шин</a></li>
+							</ul>
+						</li>
+					</ul>
+					<form role="search" class="search navbar-form navbar-left" method="GET" action="{{ path('catalog_article') }}">
+						<div class="input-group">
+						  <input type="text" name="article" id="article" class="form-control" placeholder="Поиск по артикулу"/>
+						  <span class="input-group-btn">
+							<button 
+								class="btn btn-default" 
+								type="submit"
+								onclick="yaCounter40907444.reachGoal('searchstring'); return true;"
+							>
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+						  </span>
+						</div>
+					</form>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="{{ path('fos_user_profile_show') }}" class="user_text" title="{{app.user.FullName ? app.user.FullName : app.user.username}}">{{app.user.FullName ? app.user.FullName : app.user.username}}</a></li>
+						<li class="hidden-sm hidden-xs"><a href="{{ path('orders', {'ordertype':'disk'}) }}">Заказы Диски</a></li>
+						<li class="hidden-sm hidden-xs"><a href="{{ path('orders', {'ordertype':'tire'}) }}">Заказы Шины</a></li>
+
+						<li class="dropdown hidden-md hidden-lg topmenu-xs">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								Заказы <b class="caret"></b></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ path('orders', {'ordertype':'disk'}) }}">Заказы Диски</a></li>
+								<li><a href="{{ path('orders', {'ordertype':'tire'}) }}">Заказы Шины</a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span class="glyphicon glyphicon-align-justify"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ path('reserve_index') }}">Резервы</a></li>
+								<li><a href="{{ path('payment') }}">График платежей</a></li>
+								<li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+{# /меню для больших разрешений #}
+     </header>
+
+	{% for key, message in app.session.getFlashes() %}
+		<div class="alert {{ key }} alert-dismissable alert-top">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			{{ message|trans({}, 'FOSUserBundle')|raw|nl2br }}
+		</div>
+	{% endfor %}
+
+	{% include 'Top10CabinetBundle:Default:message.html.twig' %}
+
+    <div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-9 col-md-9 col-sm-9">
+				<!--div class="panel panel-default"-->
+					{% block body %}Ничего нет{% endblock %}
+				<!--/div-->
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3">
+				{% block right_column %}
+					{% include 'Top10CabinetBundle:Default:fixed_cart.html.twig' %}
+					{% include 'Top10CabinetBundle:Catalog:loadFile.html.twig' %}
+					{% include 'Top10CabinetBundle:Default:actions.html.twig' %}
+				{% endblock right_column %}
+			</div>
+		</div>
+    </div>
+	
+    <footer class="container-fluid">
+        &copy; {{ "now"|date("Y") }} "Точка-маркет"
+    </footer>
+
+    {% block javascripts %}
+    {% endblock %}
+</body>
+{# if is_granted('ROLE_ADMIN') %}ПРОФИЛАКТИКА! Эту часть нужно перенечти перед первым тегом body
+{% else %}
+<body class="bodyv-xs">
+	<header>
+		<nav class="navbar navbar-default hidden-xs logo" role="navigation" style="background-color:#fb6d01">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="{{ path('top10_cabinet_default_index') }}">
+						<img src="http://tochka-market.ru/images/tm_white.png" width="198" height="29" alt="" />
+					</a>
+					<a class="navbar-brand logo-ko" href="{{ path('top10_cabinet_default_index') }}">
+						Кабинет оптовика
+					</a>
+				</div>
+			</div>
+        </nav>
+     </header>
+
+	<br/>
+	<br/>
+	<div class="alert alert-danger alert-dismissable alert-top">
+		<strong>Внимание! На сайте профилактические работы. Приносим свои извинения.</strong>
+	</div>
+
+	<footer class="container-fluid">
+		&copy; {{ "now"|date("Y") }} "Точка-маркет"
+    </footer>
+</body>
+{% endif #}
+</html>

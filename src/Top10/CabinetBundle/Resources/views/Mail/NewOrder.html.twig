@@ -1,0 +1,32 @@
+<p>Был сделан новый заказ {% if type == "disk" %}на диски{% endif %}{% if type == "tire" %}на шины{% endif %} через Кабинет Оптовика.</p>
+
+<p><b>Дата:</b> {{order.date|date('d.m.Y H:i:s')}}</p>
+<p><b>Партнер:</b> {{order.user.username}}</p>
+
+<table cellpadding="2" cellspacing="0" border="1" width="100%">
+<tr>
+	<th>Название</th>
+    <th>Артикул</th>
+	<th>Количество</th>
+	<th>Цена</th>
+	<th>Сумма</th>
+</tr>
+
+{% for item in products %}
+<tr>
+	<td>{{item.product.name}}</td>
+	<td style="text-align: center;">{{item.product.article}}</td>
+	<td style="text-align: center;">{{item.quantity}}</td>
+	<td style="text-align: right;">{{item.price}} руб</td>
+	<td style="text-align: right;">{{item.quantity * item.price}} руб</td>
+</tr>
+{% endfor %}
+</table>
+
+<p><b>Итого:</b> {{order.price}} руб</p>
+
+{% if order.message %}
+<p><b>Примечание:</b> {{order.message}}</p>
+{% endif %}
+
+<p><a href="http://cabinet.tochka-market.ru{{ path('order_edit', { 'id':order.id }) }}">Перейти к редактированию заказа</a></p>

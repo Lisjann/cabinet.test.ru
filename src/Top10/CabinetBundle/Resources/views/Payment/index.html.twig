@@ -1,0 +1,70 @@
+{% extends '::layout.html.twig' %}
+
+{% block body %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h1>Ваши платежи {% if app.request.query.get('type') == "14" %}по шинам{% elseif app.request.query.get('type') == "41" %}по дискам{% endif %}</h1>
+		</div>
+
+
+		<ul>
+			<li><a href="/payment?type=14">Платежи по шинам</a></li>
+			<li><a href="/payment?type=41">Платежи по дискам</a></li>
+		</ul>
+
+		<table class="table records_list">
+			<thead>
+				<tr>
+					<th>{{ knp_pagination_sortable(entities, 'Дата документа', 'p.data')|raw }}</th>
+					<th>{{ knp_pagination_sortable(entities, '№ документа', 'p.numberdoc')|raw }}</th>
+					<th>Описание условий</th>
+					<th>{{ knp_pagination_sortable(entities, 'Сумма документа', 'p.price')|raw }}</th>
+					<th>{{ knp_pagination_sortable(entities, 'Кол-во дней от даты платежа', 'p.delay')|raw }}</th>
+					{# <th>{{ entities.sortable('Задолженость', 'p.debt')|raw }}</th> #}
+					<th>{{ knp_pagination_sortable(entities, 'Просроченная задолженность', 'p.overdue')|raw }}</th>
+					<th>{{ knp_pagination_sortable(entities, 'Долг клиента', 'p.duty')|raw }}</th>
+					<th>{{ knp_pagination_sortable(entities, 'Пени', 'p.fines')|raw }}</th>
+					{#<th>Created</th>
+					<th>Updated</th>#}
+				</tr>
+			</thead>
+			<tbody>
+			{% for entity in entities %}
+				<tr>
+					<td>{% if entity.data %}{{ entity.data|date('Y-m-d') }}{% endif %}</td>
+					<td>{{ entity.numberdoc }}</td>
+					<td>{{ entity.description }}</td>
+					<td>{{ entity.price }}</td>
+					<td>{{ entity.delay }}</td>
+					{#<td>{{ entity.debt }}</td>#}
+					<td>{{ entity.overdue }}</td>
+					<td>{{ entity.duty }}</td>
+					<td>{{ entity.fines }}</td>
+					{#<td>{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+					<td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>#}
+					{#<td>
+						<ul>
+							<li>
+								<a href="{{ path('payment_show', { 'id': entity.id }) }}">show</a>
+							</li>
+							<li>
+								<a href="{{ path('payment_edit', { 'id': entity.id }) }}">edit</a>
+							</li>
+						</ul>
+					</td>#}
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+
+		{{ knp_pagination_render(entities) }}
+
+		{#<ul>
+			<li>
+				<a href="{{ path('payment_new') }}">
+					Create a new entry
+				</a>
+			</li>
+		</ul>#}
+	</div>
+{% endblock %}

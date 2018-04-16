@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ko" basedir="." default="build:main">
+
+    <!-- Properties -->
+    <property name="dir.app" value="${project.basedir}/app" />
+    <property name="dir.src" value="${project.basedir}/src" />
+    <property name="dir.build" value="${project.basedir}/app/build" />
+    <property name="dir.docs" value="${dir.build}/docs" />
+    <property name="dir.docs.phpdoc" value="${dir.docs}/phpdoc" />
+    <property name="dir.docs.docblox" value="${dir.docs}/docblox" />
+    <property name="dir.reports" value="${dir.build}/logs" />
+    <property name="dir.reports.pdepend" value="${dir.reports}/pdepend" />
+    <property name="dir.reports.coverage" value="${dir.reports}/coverage" />
+
+    <!-- Filesets -->
+    <fileset id="sourcecode" dir="${dir.src}">
+        <include name="**/*.php" />
+    </fileset>
+
+    <!-- Default target -->
+    <target name="build:main"
+            depends="build:clean, build:composer, build:prepare, build:test"
+            description="Run all test and build everything" />
+
+    <!-- Test target -->
+    <target name="build:test"
+            depends="test:unit"
+            description="Executes all tests.." />
+
+    <!-- Project build clean -->
+    <target name="build:clean" description="Clean up build directories.">
+        <echo msg="Cleaning build directories ..." />
+        <delete dir="${dir.build}" verbose="true" />
+    </target>
+
+    <!-- Project build prepare -->
+    <target name="build:prepare" description="Create build directories.">
+        <echo msg="Creating build directories ..." />
+        <mkdir dir="${dir.build}" />
+        <mkdir dir="${dir.docs}" />
+        <mkdir dir="${dir.docs.phpdoc}" />
+        <mkdir dir="${dir.docs.docblox}" />
+        <mkdir dir="${dir.reports}" />
+        <mkdir dir="${dir.reports.coverage}" />
+        <mkdir dir="${dir.reports.pdepend}" />
+    </target>
+
+    <!-- Project build install -->
+    <target name="build:composer"
+            depends="composer:install, composer:optimize"
+            description="Install dependencies." />
+
+    <!-- Unit tests -->
+    <target name="test:unit" description="Executes unit tests.">
+        <echo msg="Running unit tests ..." />
+        <!--<exec command="phpunit -!-log-junit ${dir.reports}/phpunit.xml -!-coverage-clover ${dir.reports.coverage}/clover.xml -!-coverage-html ${dir.reports.coverage}/ -c ${dir.app}"/>-->
+        <!--<echo msg="phpunit -!-log-junit ${dir.reports}/phpunit.xml -c ${dir.app}" />-->
+        <!--<exec command="phpunit -!-log-junit ${dir.reports}/phpunit.xml -c ${dir.app}" />-->
+        <!--<exec command="phpunit -c ${dir.app}" />-->
+        <phpunit printsummary="true" bootstrap="${dir.app}/bootstrap.php.cache">
+            <batchtest>
+                <fileset dir="src/">
+                    <include name="*/*Bundle/Tests/**/*Test.php"/>
+                </fileset>
+            </batchtest>
+            <formatter type="xml" todir="${dir.reports}" outfile="phpunit.xml"/>
+        </phpunit>
+    </target>
+
+    <target name="composer:install" description="Install vendors">
+        <echo msg="Install vendors ..." />
+        <composer command="install" composer="${project.basedir}/composer.phar">
+            <arg value="--dev" />
+        </composer>
+    </target>
+
+    <target name="composer:optimize" description="Build class map">
+        <echo msg="Build class map ..." />
+        <composer command="dump-autoload" composer="${project.basedir}/composer.phar">
+            <arg value="--optimize" />
+        </composer>
+    </target>
+</project>

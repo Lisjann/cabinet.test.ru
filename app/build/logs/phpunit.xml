@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="AllTests" tests="9" assertions="0" failures="0" errors="9" time="0.006249">
+    <testsuite name="Top10\CabinetBundle\Tests\Service\Json5Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json5Test.php" namespace="Top10\CabinetBundle\Tests\Service" fullPackage="Top10.CabinetBundle.Tests.Service" tests="1" assertions="0" failures="0" errors="1" time="0.001555">
+      <testcase name="testExistedUserEmail" class="Top10\CabinetBundle\Tests\Service\Json5Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json5Test.php" line="43" assertions="0" time="0.001555">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Service\Json5Test::testExistedUserEmail
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json5Test.php:27
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+    </testsuite>
+    <testsuite name="Top10\CabinetBundle\Tests\Service\Json3Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php" namespace="Top10\CabinetBundle\Tests\Service" fullPackage="Top10.CabinetBundle.Tests.Service" tests="7" assertions="0" failures="0" errors="7" time="0.003982">
+      <testcase name="testSap5Blocked" class="Top10\CabinetBundle\Tests\Service\Json3Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php" line="42" assertions="0" time="0.000596">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Service\Json3Test::testSap5Blocked
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php:33
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+      <testcase name="testSap11Blocked" class="Top10\CabinetBundle\Tests\Service\Json3Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php" line="61" assertions="0" time="0.000558">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Service\Json3Test::testSap11Blocked
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php:33
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+      <testcase name="testValidFile" class="Top10\CabinetBundle\Tests\Service\Json3Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php" line="79" assertions="0" time="0.000559">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Service\Json3Test::testValidFile
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php:33
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+      <testcase name="testCP1251File" class="Top10\CabinetBundle\Tests\Service\Json3Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php" line="96" assertions="0" time="0.000562">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Service\Json3Test::testCP1251File
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php:33
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+      <testcase name="testBadField" class="Top10\CabinetBundle\Tests\Service\Json3Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php" line="111" assertions="0" time="0.000585">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Service\Json3Test::testBadField
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php:33
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+      <testcase name="testBadField2" class="Top10\CabinetBundle\Tests\Service\Json3Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php" line="129" assertions="0" time="0.000562">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Service\Json3Test::testBadField2
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php:33
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+      <testcase name="testChangeStatusOrder" class="Top10\CabinetBundle\Tests\Service\Json3Test" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php" line="148" assertions="0" time="0.000560">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Service\Json3Test::testChangeStatusOrder
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Service/Json3Test.php:33
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+    </testsuite>
+    <testsuite name="Top10\CabinetBundle\Tests\Controller\DefaultControllerTest" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Controller/DefaultControllerTest.php" namespace="Top10\CabinetBundle\Tests\Controller" fullPackage="Top10.CabinetBundle.Tests.Controller" tests="1" assertions="0" failures="0" errors="1" time="0.000712">
+      <testcase name="testIndex" class="Top10\CabinetBundle\Tests\Controller\DefaultControllerTest" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Controller/DefaultControllerTest.php" line="9" assertions="0" time="0.000712">
+        <error type="RuntimeException">Top10\CabinetBundle\Tests\Controller\DefaultControllerTest::testIndex
+RuntimeException: You must override the WebTestCase::createKernel() method.
+
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:62
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:119
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:151
+/home/rimeks/cabinet.office.sigmakom.ru/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php:42
+/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Controller/DefaultControllerTest.php:11
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTestRunner.php:118
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:375
+/usr/share/pear/phing/tasks/ext/phpunit/PHPUnitTask.php:315
+/usr/share/pear/phing/Task.php:260
+/usr/share/pear/phing/Target.php:298
+/usr/share/pear/phing/Target.php:321
+/usr/share/pear/phing/Project.php:818
+/usr/share/pear/phing/Project.php:791
+/usr/share/pear/phing/Phing.php:572
+/usr/share/pear/phing/Phing.php:170
+/usr/share/pear/phing/Phing.php:270
+/usr/share/pear/phing.php:43
+</error>
+      </testcase>
+    </testsuite>
+    <testsuite name="Top10\CabinetBundle\Tests\Controller\PaymentControllerTest" file="/home/rimeks/cabinet.office.sigmakom.ru/src/Top10/CabinetBundle/Tests/Controller/PaymentControllerTest.php" namespace="Top10\CabinetBundle\Tests\Controller" fullPackage="Top10.CabinetBundle.Tests.Controller" tests="0" assertions="0" failures="0" errors="0" time="0.000000"/>
+  </testsuite>
+</testsuites>

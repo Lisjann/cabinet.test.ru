@@ -1,0 +1,14 @@
+<p>Информация по обновлению файла ({{ filename }}):<br />
+
+{% if errors|length > 0 %}
+	Системные сообщения:<br />
+	<p>
+	{% for type, error in errors %}
+		{{ error }}<br />
+	{% endfor %}
+	</p>
+{% else %}
+	<p>Ошибок не обнаружено.<br />
+{% endif %}
+<br />
+<a href="http://cabinet.rimeks-wheels.ru/">Кабинет Oптовика</a>

@@ -1,0 +1,38 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    router:   { resource: "%kernel.root_dir%/config/routing_dev.yml" }
+    profiler: { only_exceptions: false }
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+monolog:
+    handlers:
+        main:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: info
+            channels: !import
+        #firephp:
+        #    type:  firephp
+        #    level: info
+
+        import:
+            type: stream
+            path: "%kernel.logs_dir%/import.%kernel.environment%.log"
+            channels: import
+
+assetic:
+    use_controller: true
+
+top10_cabinet:
+    # email на которые будут отправлять сообщения в случае чего
+    emails:
+        - %developer_email%
+
+swiftmailer:
+    delivery_address: %developer_email%
+    transport: %developer_transport%

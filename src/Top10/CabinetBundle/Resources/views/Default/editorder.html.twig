@@ -1,0 +1,852 @@
+{% extends '::layout.html.twig' %}
+
+{% block title %}Редактирование заказа № {{order.id}}{% endblock %}
+
+
+	{% block javascript %}
+		<script type="text/javascript">
+		{% if app.user.location and app.user.location != 'Екатеринбург' %}
+			//рассчет доставки ТК Кит
+				sum_delivery_tk_kit = 0;
+				day_delivery_tk_kit = 0;
+				function getDeliveryTkKit(article, quantity){
+					var location_to = '{{app.user.location}}';
+
+					if ( article != '' &&  quantity != '' && location_to != '' ){
+						$.ajax({
+							type: "POST",
+							url: "http://tochka-market.ru/proga/include/ajax/delivery-tk-kit.php",
+							dataType: 'json',
+							crossDomain : true,
+							data: {
+								"PRODUCT_ARTICLE": article,
+								"QUANTITY" : quantity,
+								"REGION_NAME" : location_to,
+								"JSON" : true
+							},
+							beforeSend: function(){
+								$("#delivery_tk_kit" ).html('<div class="preloader"></div>');
+							},
+							success: function(jsondata){
+								if(jsondata.error == undefined){
+									sum_delivery_tk_kit = sum_delivery_tk_kit + jsondata.price;
+									if( jsondata.day > day_delivery_tk_kit )
+										day_delivery_tk_kit = jsondata.day;
+									else
+										day_delivery_tk_kit = day_delivery_tk_kit;
+
+									$("#delivery_tk_kit").html( "<b>" + sum_delivery_tk_kit + "</b> руб. <b>" + day_delivery_tk_kit + "</b> дней");
+								}
+								else{
+									$("#delivery_tk_kit_err").html( jsondata.error);
+								}
+							},
+							error: function (jqXHR, exception) {
+								var msg = '';
+								if (jqXHR.status === 0) {
+									msg = 'Не определенно';
+								} else if (jqXHR.status == 404) {
+									msg = 'Не определенно';
+								} else if (jqXHR.status == 500) {
+									msg = 'Не определенно';
+								} else if (exception === 'parsererror') {
+									msg = 'Не определенно';
+								} else if (exception === 'timeout') {
+									msg = 'Не определенно';
+								} else if (exception === 'abort') {
+									msg = 'Не определенно';
+								} else {
+									msg = 'Не определенно';
+								}
+								$("#delivery_tk_kit").html( msg);
+							},
+						});
+					}
+				}
+
+			$( document ).ready(function() {
+				{% if order.productsorders.count %}
+					{% for item in order.productsorders %}
+						{% if item.product.type == 'tire' or  item.product.type == 'disk' %}
+							getDeliveryTkKit( '{{item.product.article}}', {{item.quantity}} )
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+
+			});
+		{% endif %}
+
+
+		//при выборе тип доставки делаем сабмит для того чтобы добавились поля (например телефон, город ... ) используемые при данном типе доставки
+		$( document ).ready(function() {
+			$("#top10_cabinetbundle_supply_isdeliverytype").val(null);
+
+			$( "#top10_cabinetbundle_supply_deliverytypeint" ).change(function(e){
+				$("#top10_cabinetbundle_supply_isdeliverytype").val(1);
+				e.preventDefault();
+				$("#delivery_form").submit();
+			});
+
+			$('.refresh').tooltip();//объявляем bootstrap title
+			$('.article').tooltip();//объявляем bootstrap title
+			
+			$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+				event.preventDefault();
+				$(this).ekkoLightbox();
+			});
+
+			$("#sentmail").change(function(){
+				$.ajax({
+					type: "POST",
+					url: "{{ path('sentmail', { 'id':order.id }) }}",
+					data: {
+						"sentmail": $(this).prop("checked") ? 1 : 0
+					}
+					
+				});
+			})
+		});
+
+		//удалять позицию(tr) товара в списке товаров на поставку
+		/*function deleteProductSupply( $btnDel ){
+			$btnDel.closest('tr').remove();
+			if ( $('#supply_order_products').find('.btn-delete').length < 2 )
+				$('#supply_order_products').find('.btn-delete').remove();
+		}*/
+
+
+		</script>
+
+	{% endblock %}
+
+
+{% block body %}
+<div class="panel panel-default">
+    
+	<div class="panel-heading">
+		<h1>Заказ № {{ order.sapid ? order.sapid : '##' }}</h1>
+	</div>
+
+	<div class="panel-body">
+		<!--div class="well well-lg"-->
+			<ul class="list-group">
+				<li class="list-group-item" style="background-color: {{order.status.color}}">
+					Статус: <strong>{{order.status.name| raw}}</strong>
+				</li>
+				{% if order.factory.name is defined %}
+					<li class="list-group-item">
+						Склад: <strong>{{order.factory.name| raw}}</strong>
+					</li>
+				{% endif %}
+				<li class="list-group-item">
+					Дата создания: <strong>{{order.created|date('d.m.Y H:i:s')}}</strong>
+				</li>
+				<li class="list-group-item">
+					Дата последнего изменения: <strong>{{order.updated|date('d.m.Y H:i:s')}}</strong>
+				</li>
+				{% if order.status.id != 5 and order.status.id != 6 %}
+					<li class="list-group-item">
+						Окончание хранения заказа: <strong class="basket-msg">до конца дня {{datedelorder|date('d.m.Y')}}</strong>
+					</li>
+				{% endif %}
+				<li class="list-group-item">
+					Сумма заказа: <strong>{{order.price}}</strong> руб
+				</li>
+				<li class="list-group-item">
+					<div class="checkbox">
+						<label>
+							<input 
+								id="sentmail"
+								type="checkbox"
+								name="sentmail"
+								value="1"
+								{% if order.sentmail == 1 %}checked="checked"{% endif %}
+								onclick="yaCounter40907444.reachGoal('snedmailedit'); return true;"
+							/> Получать уведомления на почту о изменении в заказе
+						</label>
+					</div>
+				</li>
+			</ul>
+		<!--/div-->
+	</div>
+
+	<div class="panel-heading">
+		<h4>Товары в заказе</h4>
+	</div>
+    {% if order.productsorders.count %}
+{# для больших разрешений #}
+		<form role="form" action="{{ path('group_update_order', { 'id':order.id }) }}" method="POST">
+			<table class="table hidden-xs">
+                <tr>
+                    <th>КОД</th>
+					<th>НАЗВАНИЕ</th>
+                    <th>КОЛ-ВО</th>
+                    <th>ПОД<wbr>ТВЕР<wbr>ЖДЕ<wbr>НО</th>
+                    <th>НА СКЛА<wbr>ДЕ</th>
+                    <th>ЦЕНА</th>
+                    <th title="некоторые позиции могут быть добавленны в заказ вашим Менеджером, например КИТы для дисков, крепеж.">БЫЛ ИЗ<WBR>МЕ<WBR>НЕН</th>
+                    <th>СТА<wbr>ТУС</th>
+                    <th>&nbsp;</th>
+                </tr>
+            {% for item in order.productsorders %}
+
+				{# выбор картинки по цвету и модели #}
+
+				{% if item.product.type == "disk" %}
+					{% set full_path_img = asset('bundles/cabinet/images/noimage_disk.png') %}
+				{% elseif item.product.type == "tire" %}
+					{% set full_path_img = asset('bundles/cabinet/images/noimage_bus.png') %}
+				{% else %}
+					{% set full_path_img = asset('bundles/cabinet/images/noimage_bus.png') %}
+				{% endif %}
+
+				{% set noColorText = null %}
+				{% if item.product.model %}
+					{% set i = 0 %}
+					{% for file in item.product.model.file %}
+						{% if item.product.color and file.type %}
+							{% set i = i+1 %}
+							{% if i == 1 %}
+								{% set full_path_img = file.url %}
+								{% set noColorText = 'Цвет на фото может не совподать с цветом диска. Цвет на фото: <strong>' ~ file.type ~ '</strong>' %}
+							{% endif %}
+
+							{% if file.type == item.product.color %}
+							{% set full_path_img = file.url %}
+								{% set noColorText = null %}
+							{% endif %}
+						{% else %}
+							{% set full_path_img = file.url %}
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+				{# выбор картинки по цвету и модели #}
+
+
+
+				{# маска для остатков #}
+				{% set quantity = '<span style="color:#999">нет</span>' %}
+				{% if item.product.quantity  is defined %}
+					{% if item.product.quantity > 0 %}
+						{% set quantity = '<strong>' ~ item.product.quantity ~ '</strong>' %}
+					{% endif %}
+
+					{% if item.product.quantity > 50 %}
+						{% set quantity = '<strong>> 50</strong>' %}
+					{% endif %}
+				{% endif %}
+
+				{# маска для остатков в резерве #}
+				{% set quantityres = '<span style="color:#999">нет</span>' %}
+				{% if item.product.quantityres is defined %}
+					{% if item.product.quantityres > 0 %}
+						{% set quantityres = '<strong style="color:#999">' ~ item.product.quantityres ~ "</strong>" %}
+					{% endif %}
+
+					{% if item.product.quantityres > 50 %}
+						{% set quantityres = '<strong style="color:#999">> 50</strong>' %}
+					{% endif %}
+				{% endif %}
+				{# маска для остатков #}
+
+                {% if item.flag == 'noedit' or item.flag == 'del' %}
+                    {% set enabled = 'readonly="readonly"' %}
+				{% else %}
+					{% set enabled = null %}
+                {% endif %}
+
+				{% if order.supply.statussupply.id is defined %}
+					{% set enabled = 'readonly="readonly"' %}
+				{% endif %}
+
+				{% if order.status.id == 5 or order.status.id == 6 or order.status.id == 7 %}
+					{% set enabled = 'readonly="readonly"' %}
+				{% endif %}
+                <tr class="position {{item.flag}}">
+                    <td width="150">
+						<p>
+							<img
+								class="article"
+								data-toggle="tooltip"
+								data-placement="bottom"
+								title="код товара Римэкса"
+								src="{{ asset('bundles/cabinet/images/rimeks.png') }}" 
+							/> 
+							<strong onmousedown="yaCounter40907444.reachGoal('article'); return true;">{{item.product.article}}</strong>
+						</p>
+						{% if item.product.articleexternal is defined and item.product.articleexternal != '' %}
+							<p>
+								<img 
+									class="article"
+									data-toggle="tooltip"
+									data-placement="bottom"
+									title="код товара Производителя"
+									src="{{ asset('bundles/cabinet/images/fabbrica.png') }}"
+								/> 
+								<strong onmousedown="yaCounter40907444.reachGoal('articleexternal'); return true;">{{item.product.articleexternal}}</strong>
+							</p>
+						{% endif %}
+					</td>
+					<td>
+						<a
+							href="{{ full_path_img }}"
+							class="productname"
+							onclick="yaCounter40907444.reachGoal('productcard'); return true;"
+							data-toggle="lightbox" 
+							data-gallery="example-gallery"
+							data-width="500"
+							data-title='
+								<p class="text-center">{{ item.product.name}}</p>
+								<p class="text-center" style="font-size:14px">
+									<img
+										class="article"
+										data-toggle="tooltip"
+										data-placement="bottom"
+										title="код товара Римэкса"
+										src="{{ asset('bundles/cabinet/images/rimeks.png') }}" 
+									/>
+									<strong>{{ item.product.article}}</strong>
+									{% if item.product.articleexternal is defined and item.product.articleexternal != '' %}
+										&nbsp;&nbsp;&nbsp;<img 
+											class="article"
+											data-toggle="tooltip"
+											data-placement="bottom"
+											title="код товара Производителя"
+											src="{{ asset('bundles/cabinet/images/fabbrica.png') }}"
+										/> 
+										<strong>{{ item.product.articleexternal}}</strong>
+									{% endif %}
+								</p>
+								{% if noColorText != null %}
+									<p class="text-center">
+										<span class="glyphicon glyphicon-tint" style="color:red" title="{{noColorText}}"></span>
+										<span class="text-danger" style="font-size:11px">{{noColorText | raw}}</span>
+										
+									</p>
+								{% endif %}
+							'
+							data-footer='
+								{% if item.product.quantity  is defined %}
+										<p class="text-center">
+											Бренд: <strong>{{ item.product.brand }}</strong>
+										</p>
+										<p class="text-center">
+											{% if item.product.model.name is defined %}
+												&nbsp;&nbsp;
+												Модель: <strong>{{ item.product.model.name }}</strong>
+											{% endif %}
+										</p>
+										{% if item.product.type == 'tire' %}
+											<p class="text-center">
+												<strong>{{ item.product.width }}</strong>/<strong>{{ item.product.height }}</strong>
+												R<strong>{{ item.product.radius }}</strong>
+											</p>
+											{% if item.product.season is defined and item.product.season != '' %}
+												<p class="text-center">
+													Сезон:
+													<img 
+														class="article"
+														data-toggle="tooltip"
+														data-placement="bottom"
+														title="{{ item.product.season}}"
+														src="
+															{% if item.product.season == 'ЗИМА' %}
+																{{ asset('bundles/cabinet/images/sezon_ico_winter.png') }}
+															{% else %}
+																{{ asset('bundles/cabinet/images/sezon_ico_summer.png') }}
+															{% endif %}
+														"
+													/> 
+												</p>
+											{% endif %}
+											<p class="text-center">
+												Макс. Нагрузка: <strong>{{ item.product.maxload }}</strong>
+												&nbsp;&nbsp;
+												Камера: <strong>{{ item.product.camera }}</strong>
+											</p>
+										{% endif %}
+										{% if item.product.type == 'disk' %}
+											<p class="text-center">
+												<strong>{{ item.product.width }}</strong>X<strong>{{ item.product.radius }}</strong>
+												&nbsp;&nbsp;
+												<strong>{{ item.product.numberfixtures }}</strong>X<strong>{{ item.product.wheelbase }}</strong>
+												&nbsp;&nbsp;
+												ET<strong>{{ item.product.boom }}</strong>
+												&nbsp;&nbsp;
+												<strong>{{ item.product.centralhole }}</strong>
+											</p>
+											<p class="text-center">
+												{% if item.product.material is defined and item.product.material != '' %}
+													Материал:  <strong>{{ item.product.material }} </strong>
+												{% endif %}
+												{% if item.product.color is defined and item.product.color != '' %}
+													&nbsp;&nbsp;
+													Цвет:  <strong>{{ item.product.color }}</strong>
+												{% endif %}
+											</p>
+											
+										{% endif %}
+										<p class="text-center">
+											На складе: {{ quantity | raw }}&nbsp;&nbsp;
+											В резерве: {{ quantityres | raw }}&nbsp;&nbsp;
+										</p>
+										<p class="text-center">
+											<strong>{{ item.price | raw }}</strong> руб.&nbsp;&nbsp;
+										</p>
+								{% endif %}
+							'
+							>
+							{{item.product.name}}
+						</a>
+                    </td>
+                    <td>
+                        <input type="hidden" value="{{item.product.id}}" name="items[]" />
+                        <input {{ enabled }} class="form-control" type="number" value="{{item.quantity}}" id="q{{item.product.id}}" name="quantity{{item.product.id}}" style="width: 60px;{%  if enabled != '' %} background-color: #ccc;{% endif %}" />
+                    </td>
+					<td>
+						{% if item.quantityaccept %}
+							<strong>{{item.quantityaccept}}</strong>
+						{% else %}
+							<span style="color:#999">нет</span>
+						{% endif %}
+                    </td>
+                    <td>
+                        {% if item.product.quantity %}
+                            {% if item.product.quantity>50 %}<strong>> 50</strong>{% else %}<strong>{{item.product.quantity}}</strong>{% endif %}
+                        {% else %}
+                            <span style="color:#999">нет</span>
+                        {% endif %}
+                    </td>
+					<td><strong>{{item.price}}</strong> руб</td>
+                    <td>
+						{% if item.addsap == true %}
+							<strong>Ме<wbr>не<wbr>дже<wbr>ром</strong>
+						{% else %}
+							<strong>Вами</strong>
+						{% endif %}
+					</td>
+					<td>
+						{% if item.flag == 'edit' %}
+							<strong title="Подтвержден">Под<wbr>твер<wbr>жден.</strong>
+						{% elseif item.flag == '' or item.flag == 'consid' %}
+							<strong title="Отправлен на рассмотрение">На рас<wbr>смот<wbr>ре<wbr>нии.</strong>
+						{% elseif item.flag == 'part' %}
+							<strong title="Отправлен на рассмотрение">Час<wbr>тич<wbr>но.</strong>
+						{% elseif item.flag == 'noedit' %}
+							<strong title="Заблокирован">За<wbr>бло<wbr>ки<wbr>ро<wbr>ван</strong>
+						{% elseif item.flag == 'del' %}
+							<strong title="Удален">Уда<wbr>лен</strong>
+						{% endif %}
+					</td>
+					<td>
+						{%  if disabledDelivery == false %}
+							<a title="Удалить" onclick="if( !confirm('Уверены, что хотите удалить?') ) return false;" href="{{ path('product_order_delete', { 'id':item.id }) }}">
+								<span class="glyphicon glyphicon-remove-circle btn-delete"></span>
+							</a>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<div class="panel-body hidden-xs">
+				{% if disabledDelivery == false %}
+					<input 
+						class="btn btn-default refresh"
+						type="submit"
+						value="Обновить количество"
+						data-toggle="tooltip"
+						data-placement="bottom"
+						title="Обновления подтвердятся через 5-10минут, пожалуйста подождите"
+						onclick="yaCounter40907444.reachGoal('refresh-amount'); return true;"
+					/>
+					&nbsp;&nbsp;
+					<input  type="submit"
+							class="btn btn-default refresh"
+							{% if order.status.id == 8%}checked="checked"{% endif %}
+							value="Отправить на почту счет для оплаты"
+							data-toggle="tooltip"
+							data-placement="bottom"
+							title="В течении 5-10 минут на почту {{ app.user.email }} прийдет письмо с прикрепленным файлом - счетом для оплаты заказа"
+							name="mailinvoice" 
+							onclick="yaCounter40907444.reachGoal('mailinvoice'); return true;"
+					/> 
+				{% endif %}
+			</div>
+		</form>
+{# для больших разрешений#}
+
+
+
+{# для мобилиников#}
+		<form role="form" action="{{ path('group_update_order', { 'id':order.id }) }}" method="POST">
+			{% for item in order.productsorders %}
+				{% if item.flag == 'noedit' or item.flag == 'del' %}
+                    {% set enabled = 'readonly="readonly"' %}
+				{% else %}
+					{% set enabled = null %}
+                {% endif %}
+
+				{% if order.statussupply.id is defined %}
+					{% set enabled = 'readonly="readonly"' %}
+				{% endif %}
+
+				<div class="panel-body hidden-lg hidden-md hidden-sm">
+					<div class="panel panel-default">
+						<div class="panel-heading">{{item.product.name}} ({{ item.product.article }})</div>
+						<table class="table">
+							<tr>
+								<th>Кол-во</th>
+								<td>
+									<input type="hidden" value="{{item.product.id}}" name="items[]" />
+									<input {{ enabled }} class="form-control" type="number" value="{{item.quantity}}" id="q{{item.product.id}}" name="quantity{{item.product.id}}" style="width: 60px;{%  if enabled != '' %} background-color: #ccc;{% endif %}" />
+								</td>
+							</tr>
+							<tr>
+								<th>Кол. под<wbr>твер<wbr>жде<wbr>но</th>
+								<td>
+									{% if item.quantityaccept %}
+										{{item.quantityaccept}}
+									{% else %}
+										-
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th>На скла<wbr>де</th>
+								<td>
+									{% if item.product.quantity %}
+										{% if item.product.quantity>50 %}> 50{% else %}{{item.product.quantity}}{% endif %}
+									{% else %}
+										-
+									{% endif %}
+								</td>
+							</tr>
+							{% if app.user.location != 'Екатеринбург' %}
+							<tr>
+								<th>Дос<wbr>тав<wbr>ка ТК Кит</th>
+								<td class="delivery_tk_kit" id="delivery_tk_kit_{{item.product.id}}">
+									{% if app.user.location == null or app.user.location == '' %}
+										<a 
+											href="{{ path('fos_user_profile_edit') }}"
+											title="для рассчета доставки ТК КИТ заполните поля город в карте клиента"
+											onclick="yaCounter40907444.reachGoal('deliverykit'); return true;"
+										>
+											укажите ваш город
+										</a>
+									{% endif %}
+								</td>
+							</tr>
+							{% endif %}
+							<tr>
+								<th>Цена</th>
+								<td><strong>{{item.price}}</strong> руб</td>
+							</tr>
+							<tr>
+								<th title="некоторые позиции могут быть добавленны в заказ вашим Менеджером, например КИТы для дисков, крепеж.">Был до<wbr>бав<wbr>лен</th>
+								<td>
+									{% if item.addsap == true %}
+										<strong>Ме<wbr>не<wbr>дже<wbr>ром</strong>
+									{% else %}
+										<strong>Вами</strong>
+									{% endif %}
+								</td>
+							</tr>
+							<tr class="position {{item.flag}}">
+								<th>Ста<wbr>тус</th>
+								<td>
+									{% if item.flag == 'edit' %}
+										<strong title="Подтвержден">Под<wbr>твер<wbr>жден.</strong>
+									{% elseif item.flag == '' or item.flag == 'consid' %}
+										<strong title="Отправлен на рассмотрение">На рас<wbr>смот<wbr>ре<wbr>нии.</strong>
+									{% elseif item.flag == 'part' %}
+										<strong title="Отправлен на рассмотрение">Час<wbr>тич<wbr>но.</strong>
+									{% elseif item.flag == 'noedit' %}
+										<strong title="Отменен">От<wbr>ме<wbr>нен</strong>
+									{% elseif item.flag == 'del' %}
+										<strong title="Отменен">Уда<wbr>лен<wbr>нен</strong>
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" class="text-center">
+									{%  if disabledDelivery == false %}
+										<a  class="hidden-xs hidden-sm hidden-md" onclick="if( !confirm('Уверены, что хотите удалить?') ) return false;" href="{{ path('product_order_delete', { 'id':item.id }) }}">Удалить</a>
+										<a class="hidden-lg" title="Удалить" onclick="if( !confirm('Уверены, что хотите удалить?') ) return false;" href="{{ path('product_order_delete', { 'id':item.id }) }}">
+											<span class="glyphicon glyphicon-remove-circle btn-delete"></span>
+										</a>
+									{% endif %}
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			{% endfor %}
+			<div class="panel-body hidden-lg hidden-md hidden-sm">
+				{% if disabledDelivery == false %}
+					<input 
+						class="btn btn-default refresh"
+						type="submit" value="Обновить количество"
+						data-toggle="tooltip"
+						data-placement="bottom"
+						title="Обновления подтвердятся через 5-10минут, пожалуйста подождите"
+						onclick="yaCounter40907444.reachGoal('refresh-amount'); return true;"
+					/>
+				{% endif %}
+			</div>
+		</form>
+{# для мобилиников#}
+
+    {% else %}
+		<div class="alert alert-info">В заказе нет товаров.</div>
+    {% endif %}
+
+    {% if disabledDelivery == false %}
+	<div class="panel-body">
+		<div class="well well-lg">
+			<div class="panel-heading">
+				<h4>Добавить товар в заказ <small>Укажите артикул и необходимое количество</small></h4>
+			</div>
+			<form role="form" action="{{ path('product_order_add', { 'id':order.id }) }}" method="POST">
+				<table class="table">
+					<tr>
+						<th>Артикул</th>
+						<th>Количество</th>
+					</tr>
+					<tr>
+						<td><input type="text" class="form-control" name="article[]"/></td>
+						<td><input type="number" class="form-control" name="quantity[]" style="width: 80px;"/></td>
+					</tr>
+				</table>
+				<div class="ym-fbox-button">
+					<input class="btn btn-default" type="submit" class="" value="Найти и добавить"/>
+				</div>
+			</form>
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+{# ПОСТАВКА ЗАКАЗА #}
+<div class="panel panel-default" >
+	{% if supplyForm is defined %}
+		{% set supply = order.supply %}
+		{% if order.sapid != null %}
+		{% if order.status.id == 2 or order.status.id == 3 or order.status.id == 5 or order.status.id == 6 %}
+
+			{% set attr = {'class':'form-control'} %}
+
+			{% if disabledDelivery == true %}
+				{% set attr = attr|merge({'disabled':'disabled'})%}
+			{% endif %}
+
+			<div class="panel-heading">
+				<h2>
+					<a name="supply"></a>
+					Отгрузка №: <strong>{% if supply.sapid is defined %}{{supply.sapid}}{% else %}...{% endif %}</strong>
+					<small>Если вас устраивает заказ и к менеджеру не осталось вопросов, то вы можете заявить заказ на отгрузку, ответ придет в течении 10-15 минут</small>
+				</h2>
+			</div>
+
+			<div class="panel-body">
+				<!--div class="well well-lg"-->
+					<ul class="list-group">
+						{% if supply.statussupply.name is defined %}
+							<li class="list-group-item" {% if supply.statussupply.color is defined %} style="background-color: {{supply.statussupply.color}}"{% endif %}>
+								Статус отгрузки:
+								<strong>
+									{{supply.statussupply.name}}
+								</strong>
+								
+							</li>
+							<li class="list-group-item">
+								{% if supply.statussupply.sapid != 98 and supply.statussupply.sapid != 0 and supply.statussupply.sapid != 1 %}
+									<div class="alert alert-danger alert-dismissable" style="margin-bottom:0;">
+										Отгрузка не создана по причине - <strong>{{supply.statussupply.name}}</strong>. Вашему менеджеру уже отправлено письмо о некорректном статусе отгрузки, в скорое он свяжется с вами.
+									</div>
+								{% elseif supply.statussupply.sapid == 1 %}
+									<div class="alert alert-info alert-dismissable" style="margin-bottom:0;">
+										Запрос на Отгрузку отправлен, в течении 10-15 мин ожидайте ответа
+									</div>
+								{% else %}
+									<div class="alert alert-success alert-dismissable" style="margin-bottom:0;">
+										Отгрузка создана. Если сроки и время отгрузки изменятся, то мы с вами дополнительно свяжемся.
+									</div>
+								{% endif %}
+							</li>
+							{% if supply.sapid is defined %}
+								{% if supply.statussupply.sapid == 98 and supply.statussupply.sapid == 0 %}
+									<li class="list-group-item">
+										<div class="alert alert-info alert-dismissable" style="margin-bottom:0;">
+											Не забывайте при получении предьявить оригинал доверенности
+										</div>
+									</li>
+								{% endif %}
+							{% endif %}
+						{% endif %}
+					</ul>
+
+					<form id="delivery_form" action="{{ path('order_edit', { 'id':order.id }) }}#supply" method="post" class="form-horizontal" role="form" {{ form_enctype(supplyForm) }}>
+						{% if disabledDelivery == false %}
+							{# if order.productsorders.count > 1 #}
+							<div class="panel-group" id="accordion">
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a 
+											class="productname"
+											data-toggle="collapse"
+											data-parent="#accordion"
+											href="#collapseOne"
+											onclick="yaCounter40907444.reachGoal('supplypart'); return true;"
+											title="Выбрать товары для поставки">
+											Выбрать товар на поставку
+										</a>
+									</h4>
+								</div>
+								<div id="collapseOne" class="panel-collapse collapse">
+								  <div class="panel-body">
+									<div class="alert alert-info alert-dismissable">
+									  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										Не выбранные позиции и позиции где кол-во больше выбранного перенесутся в новый заказ.
+									</div>
+									<div class="row">
+										{% include 'Top10CabinetBundle:Default:order_product_list.html.twig' with { 'order' : order } %}
+									</div>
+								  </div>
+								</div>
+							  </div>
+							</div>
+							{# endif #}
+						{% endif %}
+						
+						{# form_widget(supplyForm, {'attr': {'class': 'form-group'}}) #}
+						{# form_errors(supplyForm) #}
+
+						<div class="form-group">
+							{{ form_label(supplyForm.deliverytypeint, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+							<div class="col-sm-9">
+								{{ form_widget(supplyForm.deliverytypeint, { 'attr': attr }) }}
+								<span class="help-block">{{ form_errors(supplyForm.deliverytypeint) }}</span>
+							</div>
+						</div>
+						
+				{% if app.user.location != 'Екатеринбург' and supplyForm.calculate is defined %}
+					<div class="form-group">
+						<label class="col-sm-3 control-label required">Расчет доставки:</label>
+						<div class="col-sm-9" style="padding-top:7px"
+						>
+							{% if app.user.location == null or app.user.location == '' %}
+								<a 
+									href="{{ path('fos_user_profile_edit') }}"
+									class="refresh"
+									data-toggle="tooltip"
+									data-placement="bottom"
+									title="для рассчета доставки ТК КИТ заполните поля город в карте клиента"
+									onclick="yaCounter40907444.reachGoal('deliverykit'); return true;"
+								>
+									укажите ваш город
+								</a>
+							{% else %}
+								<span
+									id="delivery_tk_kit"
+									class="refresh"
+									data-toggle="tooltip"
+									data-placement="bottom"
+									title="Примерная Стоимость и время доставки заказа ТК КИТ"
+								></span>
+								<span 
+									id="delivery_tk_kit_err"
+									class="refresh"
+									data-toggle="tooltip"
+									data-placement="bottom"
+									title="Примерная Стоимость и время доставки заказа ТК КИТ"
+								></span>
+							{% endif %}
+						</div>
+					</div>
+				{% endif %}
+
+						<div class="form-group">
+							{{ form_label(supplyForm.datedo, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+							<div class="col-sm-3">
+								{{ form_widget(supplyForm.datedo, { 'attr': attr }) }}
+								<span class="help-block">{{ form_errors(supplyForm.datedo) }}</span>
+							</div>
+
+							{{ form_label(supplyForm.timedo, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+							<div class="col-sm-3">
+								{{ form_widget(supplyForm.timedo, { 'attr': attr }) }}
+								<span class="help-block">{{ form_errors(supplyForm.timedo) }}</span>
+							</div>
+						</div>
+
+						{% if supplyForm.location is defined %}
+							<div class="form-group {% if  form_errors(supplyForm.location) %}has-warning{% endif %}">
+								{{ form_label(supplyForm.location, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+								<div class="col-sm-9">
+									{{ form_widget(supplyForm.location, { 'attr': attr }) }}
+									<span class="help-block">{{ form_errors(supplyForm.location) }}</span>
+								</div>
+							</div>
+						{% endif %}
+
+						{% if supplyForm.address is defined %}
+							<div class="form-group">
+								{{ form_label(supplyForm.address, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+								<div class="col-sm-9">
+									{{ form_widget(supplyForm.address, { 'attr': attr }) }}
+									<span class="help-block">{{ form_errors(supplyForm.address) }}</span>
+								</div>
+							</div>
+						{% endif %}
+
+						{% if supplyForm.full_name is defined %}
+							<div class="form-group">
+								{{ form_label(supplyForm.full_name, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+								<div class="col-sm-9">
+									{{ form_widget(supplyForm.full_name, { 'attr': attr }) }}
+									<span class="help-block">{{ form_errors(supplyForm.full_name) }}</span>
+								</div>
+							</div>
+						{% endif %}
+
+						{% if supplyForm.telephone is defined %}
+							<div class="form-group">
+								{{ form_label(supplyForm.telephone, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+								<div class="col-sm-9">
+									{{ form_widget(supplyForm.telephone, { 'attr': attr }) }}
+									<span class="help-block">{{ form_errors(supplyForm.telephone) }}</span>
+								</div>
+							</div>
+						{% endif %}
+
+						<div class="form-group">
+							{{ form_label(supplyForm.company, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+							<div class="col-sm-9">
+								{{ form_widget(supplyForm.company, { 'attr': attr }) }}
+								<span class="help-block">{{ form_errors(supplyForm.company) }}</span>
+							</div>
+						</div>
+
+						{{ form_widget(supplyForm.isdeliverytype) }}
+						{{ form_widget(supplyForm._token) }}
+
+						{% if disabledDelivery == false %}
+							<div class="form-group">
+								<div class="col-sm-offset-3 col-sm-9">
+									<button type="submit" class="btn btn-default" onclick="yaCounter40907444.reachGoal('supply'); return true;">
+										Заявить на отгрузку
+									</button>
+								</div>
+							</div>
+						{% endif %}
+
+					</form>
+				<!--/div-->
+			</div>
+		{% endif %}
+		{% endif %}
+	{% endif %}
+</div>
+{# /ПОСТАВКА ЗАКАЗА #}
+{% endblock %}

@@ -1,0 +1,25 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     localhost
+    database_port:     ~
+    database_name:     rimeks_cabinet_alex
+    database_user:     root
+    database_password: rush3eiN
+
+    locale:            ru
+    secret:            ThisTokenIsNotSoSecretChangeIt1981294595
+
+    developer_email:   debug@top-ten.ru
+    developer_transport: null
+
+    product_import:
+        database_host:     localhost
+        database_port:     ~
+        database_name:     qpkolesa
+        database_user:     root
+        database_password: rush3eiN
+        #database_host:     localhost
+        #database_port:     ~
+        #database_name:     u13183
+        #database_user:     u13183
+        #database_password: biveb2rihiZ

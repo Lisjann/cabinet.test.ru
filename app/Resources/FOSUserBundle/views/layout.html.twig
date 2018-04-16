@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Кабинет Оптовика{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <!-- mobile viewport optimisation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+    <!--link href="{{ asset('bundles/cabinet/css/yaml/core/base.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/forms/gray-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/screen/typography.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/navigation/hlist.css') }}" rel="stylesheet"-->
+    
+	<link href="{{ asset('bundles/cabinet/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+	<link href="{{ asset('bundles/cabinet/css/project.css') }}" rel="stylesheet">
+
+
+	<!--[if lte IE 7]>
+    <link rel="stylesheet" href="{{ asset('bundles/cabinet/css/yaml/core/iehacks.min.css') }}" type="text/css"/>
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/bootstrap.js') }}"></script>
+
+	<!-- Yandex.Metrika counter -->
+	<script type="text/javascript">
+		(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter40907444 = new Ya.Metrika({ id:40907444, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); 
+	</script>
+	<!-- /Yandex.Metrika counter -->
+
+</head>
+<body {% if app.user %}class="bodyv-xs"{% endif %}>
+	<!--div id="site_close">Сайт закрыт, ведуться внутренние работы</div-->
+    <header>
+		<nav class="navbar navbar-default logo" role="navigation" style="background-color:#fb6d01">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="{{ path('top10_cabinet_default_index') }}">
+						<img src="http://tochka-market.ru/images/tm_white.png{# asset('bundles/cabinet/images/logo.jpg')#}" width="198" height="29" alt="" />
+					</a>
+					<a class="navbar-brand logo-ko" href="{{ path('top10_cabinet_default_index') }}">
+						Кабинет оптовика
+					</a>
+				</div>
+			</div>
+        </nav>
+
+		{% if app.user %}
+		{# меню для мобильных #}
+		<nav class="navbar navbar-default navbar-fixed-top visible-xs topmenu-xs" role="navigation">
+			<div class="navbar-header row">
+				<div class="col-xs-2">
+					<a class="navbar-brand " href="{{ path('top10_cabinet_default_index') }}">KO</a>
+				</div>
+				<div class="col-xs-7">
+					<form class="search" method="GET" action="{{ path('catalog_article') }}">
+						<div class="input-group">
+						  <input type="text" name="article" id="article" class="form-control" placeholder="Поиск по артикулу"/>
+						  <span class="input-group-btn">
+							<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+						  </span>
+						</div>
+					</form>
+				</div>
+				<!--div class="col-xs-3 cart-header">
+					{# include 'Top10CabinetBundle:Default:fixed_cart_mobile.html.twig' #}
+				</div-->
+				<div class="col-xs-3">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+			</div>
+
+			<div class=" navbar-collapse collapse">
+				<div class="panel-body">
+					<ul class="nav navbar-nav">
+						<li><a href="{{ path('catalog_index', {'f[type]':'disk'}) }}">Каталог дисков</a></li>
+						<li><a href="{{ path('catalog_index', {'f[type]':'tire'}) }}">Каталог шин</a></li>
+					</ul>
+				</div>
+				<div class="panel-body">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="{{ path('fos_user_profile_show') }}">{{app.user.FullName ? app.user.FullName : app.user.username}}</a></li>
+						<li><a href="{{ path('orders', {'ordertype':'disk'}) }}">Заказы Диски</a></li>
+						<li><a href="{{ path('orders', {'ordertype':'tire'}) }}">Заказы Шины</a></li>
+						<li><a href="{{ path('reserve_index') }}">Резервы</a></li>
+						<li><a href="{{ path('payment') }}">График платежей</a></li>
+						<li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+{# /меню для мобильных #}
+
+
+{# меню для больших разрешений #}
+		<nav class="navbar navbar-default hidden-xs" role="navigation" style="background-color:#ffe63b">
+			<div class="container-fluid">
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="hidden-sm hidden-xs"><a href="{{ path('catalog_index', {'f[type]':'disk'}) }}">Каталог дисков</a></li>
+						<li class="hidden-sm hidden-xs"><a href="{{ path('catalog_index', {'f[type]':'tire'}) }}">Каталог шин</a></li>
+
+						<li class="dropdown hidden-md hidden-lg topmenu-xs">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								Каталог <b class="caret"></b></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ path('catalog_index', {'f[type]':'disk'}) }}">Каталог дисков</a></li>
+								<li><a href="{{ path('catalog_index', {'f[type]':'tire'}) }}">Каталог шин</a></li>
+							</ul>
+						</li>
+					</ul>
+					<form role="search" class="search navbar-form navbar-left" method="GET" action="{{ path('catalog_article') }}">
+						<div class="input-group">
+						  <input type="text" name="article" id="article" class="form-control" placeholder="Поиск по артикулу"/>
+						  <span class="input-group-btn">
+							<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+						  </span>
+						</div>
+					</form>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="{{ path('fos_user_profile_show') }}" class="user_text" title="{{app.user.FullName ? app.user.FullName : app.user.username}}">{{app.user.FullName ? app.user.FullName : app.user.username}}</a></li>
+						<li class="hidden-sm hidden-xs"><a href="{{ path('orders', {'ordertype':'disk'}) }}">Заказы Диски</a></li>
+						<li class="hidden-sm hidden-xs"><a href="{{ path('orders', {'ordertype':'tire'}) }}">Заказы Шины</a></li>
+
+						<li class="dropdown hidden-md hidden-lg topmenu-xs">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								Заказы <b class="caret"></b></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ path('orders', {'ordertype':'disk'}) }}">Заказы Диски</a></li>
+								<li><a href="{{ path('orders', {'ordertype':'tire'}) }}">Заказы Шины</a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span class="glyphicon glyphicon-align-justify"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ path('reserve_index') }}">Резервы</a></li>
+								<li><a href="{{ path('payment') }}">График платежей</a></li>
+								<li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+{# /меню для больших разрешений #}
+		{% endif %}
+    </header>
+
+	<div class="container-fluid">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h1>Добро пожаловать в Кабинет Оптовика</h1>
+			</div>
+			{% block fos_user_content %}Ничего нет{% endblock %}
+		</div>
+    </div>
+    
+	<!--div class="ym-column">
+        <div class="ym-col1">
+            <div class="ym-cbox">
+               <div class="fos-user-content">
+					{% if wrapContent is not defined or wrapContent %}
+						<div class="ym-grid">
+							<div class="ym-g50 ym-gl">
+								<div class="ym-gbox">
+					{% endif %}
+
+
+
+					{% if wrapContent is not defined or wrapContent %}
+								</div>
+							</div>
+						</div>
+					{% endif %}
+
+				</div>
+            </div>
+        </div>        
+    </div-->
+
+	
+
+    <footer>
+        &copy; {{ "now"|date("Y") }} "Точка-маркет точка ру"
+    </footer>
+
+</body>
+</html>

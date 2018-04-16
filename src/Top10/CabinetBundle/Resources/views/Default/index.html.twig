@@ -1,0 +1,31 @@
+{% extends '::layout.html.twig' %}
+
+{% block body %}
+ <div class="panel panel-default">   
+	<ul class="nav nav-pills nav nav-stacked">
+	  <li><a href="{{ path('catalog_index', {'f[type]':'disk'}) }}">Каталог дисков</a></li>
+	  <li><a href="{{ path('catalog_index', {'f[type]':'tire'}) }}">Каталог шин</a></li>
+	  <li><a href="{{ path('fos_user_profile_show') }}">Информация аккаунта</a></li>
+	  <li><a href="{{ path('orders', {'ordertype':'disk'}) }}">Заказы дисков</a></li>
+	  <li><a href="{{ path('orders', {'ordertype':'tire'}) }}">Заказы шин</a></li>
+	  <li><a href="{{ path('payment') }}">График платежей</a></li>
+	  <li><a href="{{ path('fos_user_security_logout') }}">Выход</a></li>
+	</ul>
+</div>
+{% endblock body %}
+
+{% block right_column %}
+    {% include 'Top10CabinetBundle:Default:fixed_cart.html.twig' %}
+	{# include 'Top10CabinetBundle:Catalog:searchArticle.html.twig' #}
+    {% include 'Top10CabinetBundle:Catalog:filter.html.twig' %}
+    {% include 'Top10CabinetBundle:Catalog:loadFile.html.twig' %}
+	{% include 'Top10CabinetBundle:Default:actions.html.twig' %}
+{% endblock right_column %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var app = app || {};
+        app.filter = true;
+    </script>
+    <script src="{{ asset('/bundles/cabinet/js/Catalog.filter.js')}}"></script>
+{% endblock javascripts %}

@@ -1,0 +1,46 @@
+<!--div class="alert alert-success alert-dismissable alert-top">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Внимание Клинеты.</strong> Мы немного изменили дизайн сайта. Так же адаптировали сайт под мобильные устройства.
+</div-->
+
+<!--div class="alert alert-danger alert-dismissable alert-top">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Внимание!</strong> В связи со структурными изменениями отделов и внесением корректив в программу SAP в ближайшее время <strong>возможна не корректная работа Кабинета оптовика</strong>. Приносим свои извинения.
+</div-->
+<!--div class="alert alert-danger alert-dismissable alert-top">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Уважаемые клиенты.</strong> Обработка заказов возобнов в понедельник 30 августа. Приносим свои извинения.
+</div-->
+
+<div class="alert alert-info alert-dismissable alert-top">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Внимание!</strong> резервы хранятся до 3 дней.
+</div>
+
+{% set shape =  "now"|date('U') - app.user.passwordRequestedAt|date('U') %}
+{% if shape >= 15768000 %}
+<div class="alert alert-warning alert-dismissable alert-top">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	<strong>Внимание!</strong> Ваш пароль не менялся более 6 месяцев, рекомендуем изменить пароль.
+	<a 	href="{{ path('fos_user_resetting_send_email', {'username': app.user.email}) }}" 
+		title="Отправить ссылку на email для смены пароля"
+		onclick="yaCounter40907444.reachGoal('repassword'); return true;">
+		сменить пароль
+	</a>
+</div>
+{% endif %}
+
+<!--div class="box info">
+
+	{% set shape =  "now"|date('U') - app.user.passwordRequestedAt|date('U') %}
+	{% if shape >= 15768000 %}
+	<div class="info-msg">
+        Ваш пароль не менялся более 6 месяцев, рекомендуем изменить пароль.
+		<a href="{{ path('fos_user_resetting_send_email', {'username': app.user.email}) }}" title="Отправить ссылку на email для смены пароля" onclick="yaCounter40907444.reachGoal('repassword'); return true;">сменить пароль</a>
+    </div>
+	{% endif %}
+	<!--div class="basket-msg">
+		В связи с началом сезона <b>суббота объявляется рабочей</b>.<br/> Подробности узнавайте у менеджеров.
+    </div>
+</div-->
+

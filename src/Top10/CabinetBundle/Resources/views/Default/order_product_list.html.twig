@@ -1,0 +1,47 @@
+{% if order.productsorders.count %}
+	<div class="panel-heading">
+		<h4>Товары для Поставки</h4>
+	</div>
+	<table id="supply_order_products" class="table hidden-xs">
+		<tr>
+			<th>в поставку</th>
+			<th>Товар</th>
+			<th>Кол-во</th>
+			<th>Цена за шт.</th>
+		</tr>
+	{% for item in order.productsorders %}
+
+		{% if item.flag == 'noedit' %}
+			{% set enabled = 'readonly="readonly"' %}
+		{% else %}
+			{% set enabled = null %}
+		{% endif %}
+
+		{% if order.statussupply.id is defined %}
+			{% set enabled = 'readonly="readonly"' %}
+		{% endif %}
+		<tr class="position {{item.flag}}">
+			<td>
+				<input type="checkbox" value="1" name="items[{{item.id}}]" checked="checked" />
+			</td>
+			<td>
+				{{item.product.name}} ({{ item.product.article }})
+			</td>
+			<td>
+				<input type="hidden" value="{{item.id}}" name="items-huitems[]" />
+				<input {{ enabled }} class="form-control" type="number" value="{{item.quantityaccept}}" id="q{{item.id}}" name="quantity[{{item.id}}]" style="width: 60px;{%  if enabled != '' %} background-color: #ccc;{% endif %}" />
+			</td>
+			<td><strong>{{item.price}}</strong> руб</td>
+			<!--td>
+				{% if order.productsorders.count > 1 %}
+					<span
+						  class="glyphicon glyphicon-remove-circle btn-delete"
+						  title="Удалить"
+						  onclick="if( confirm('Уверены, что хотите удалить?' ) ) deleteProductSupply( $(this) );">
+					</span>
+				{% endif %}
+			</td-->
+		</tr>
+	{% endfor %}
+	</table>
+{% endif %}

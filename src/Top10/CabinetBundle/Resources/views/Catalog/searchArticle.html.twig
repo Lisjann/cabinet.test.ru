@@ -1,0 +1,21 @@
+<div class="well well-lg">
+	<!--form class="ym-form hidden-xs" method="GET" action="{{ path('catalog_article') }}">
+		
+			<label for="article">Поиск по артикулу</label>
+			<input type="text" name="article" id="article"/>
+		</div>
+		<div class="ym-fbox-button">
+			<input type="submit" class="ym-button" value="Поиск" />
+		</div>
+	</form-->
+
+	<form role="form" class="search" method="GET" action="{{ path('catalog_article') }}">
+		<div class="input-group">
+		  <input type="text" name="article" id="article" class="form-control" placeholder="Поиск по артикулу"/>
+		  <span class="input-group-btn">
+			<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+		  </span>
+		</div>
+	</form>
+	
+</div>

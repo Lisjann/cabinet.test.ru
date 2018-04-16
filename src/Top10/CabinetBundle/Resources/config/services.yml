@@ -1,0 +1,65 @@
+parameters:
+    top10_cabinet.emails.manager: elena.rimeks2013@yandex.ru
+    top10_cabinet.emails.managersupply: shirockovan@gmail.com
+    top10_cabinet.emails.default: cabinet@rimeks.ru
+    top10_cabinet.status_default: 1
+    top10_cabinet.status_supply_default: 1
+    top10_cabinet.day_live: 90
+    top10_cabinet.day_live_order_files: 7
+
+services:
+    top10_user.registration.form.type:
+        class: Top10\CabinetBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: top10_user_registration }
+
+    cabinet.json_import:
+        class: Top10\CabinetBundle\Service\JsonImport
+        arguments: [@kernel, @logger]
+        tags:
+            - { name: monolog.logger, channel: import }
+
+    cabinet.json6_import:
+        class: Top10\CabinetBundle\Service\Json6Import
+        arguments: [@doctrine.orm.entity_manager, @logger, @kernel]
+        tags:
+            - { name: monolog.logger, channel: import }
+
+    cabinet.json3_import:
+        class: Top10\CabinetBundle\Service\Json3Import
+        arguments: [@doctrine.orm.entity_manager, @logger, @kernel]
+        tags:
+            - { name: monolog.logger, channel: import }
+    
+    cabinet.json12_import:
+        class: Top10\CabinetBundle\Service\Json12Import
+        arguments: [@doctrine.orm.entity_manager, @logger, @kernel]
+        tags:
+            - { name: monolog.logger, channel: import }
+
+    cabinet.json5_import:
+        class: Top10\CabinetBundle\Service\Json5Import
+        arguments: [@doctrine.orm.entity_manager, @logger, @kernel, @fos_user.user_manager, @templating]
+        tags:
+            - { name: monolog.logger, channel: import }
+
+    cabinet.json5upd_import:
+        class: Top10\CabinetBundle\Service\Json5ImportUpd
+        arguments: [@doctrine.orm.entity_manager, @logger, @kernel, @fos_user.user_manager, @templating]
+        tags:
+            - { name: monolog.logger, channel: import }
+
+    cabinet.catalog_search:
+        class: Top10\CabinetBundle\Service\CatalogSearch
+        arguments: [@service_container]
+
+    cabinet.cart_manager:
+        class: Top10\CabinetBundle\Service\CartManager
+        arguments: [@security.context,@doctrine.orm.entity_manager ]
+
+    cabinet.product_import:
+        class: Top10\CabinetBundle\Service\ProductImport
+        arguments: [@service_container, @doctrine.orm.entity_manager, %product_import%, @logger ]
+        tags:
+            - { name: monolog.logger, channel: import }

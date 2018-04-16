@@ -1,0 +1,69 @@
+
+<script type="text/javascript">
+	/*$(function() {
+		$.datepicker.setDefaults($.datepicker.regional['ru']);
+		$( "#o_date_from" ).datepicker({});
+		$( "#o_date_to" ).datepicker({
+			showOn: "button",
+			buttonImage: "{{ asset('bundles/cabinet/images/calendar.gif')}}",
+			buttonImageOnly: true
+		});
+	});*/
+	
+	$(function () {
+		$('#date_from').datetimepicker({
+			pickTime: false,
+			language: 'ru'
+		});
+
+		$('#date_to').datetimepicker({
+			pickTime: false,
+			language: 'ru'
+		});
+	});
+</script>
+
+
+<div class="well well-lg">
+<form id="order-filter-form" class="form-horizontal" role="form" method="GET" action="{{ path('orders', {'ordertype':ordertype}) }}">
+    <div class="ym-fbox-text">
+        <p><b>Поиск по архиву:</b></p>
+    </div>
+
+    {{ form_errors(form) }}
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label" for="date_from">Дата от:</label>
+		<div class="col-sm-9">
+			{{ form_errors(form['date_from']) }}
+			<div class="input-group date" id="date_from">
+				{{ form_widget(form['date_from'], {'attr': {'class': 'form-control'} }) }}
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Дата до:</label>
+		<div class="col-sm-9">
+			{{ form_errors(form['date_to']) }}
+			<div class="input-group date" id="date_to">
+				{{ form_widget(form['date_to'], {'attr': {'class': 'form-control'} }) }}
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</span>
+			</div>
+		</div>
+    </div>
+
+	<div class="form-group">
+		<div class="col-sm-offset-3 col-sm-9">
+			<input type="submit" class="btn btn-default" value="Найти" id="submit" name="submit" />
+			<input type="button" class="btn btn-default" value="Сбросить" id="button1" name="button1" onclick="location.href='{{ path('orders', {'ordertype':ordertype}) }}'" />
+		</div>
+    </div>
+	
+</form>
+</div>

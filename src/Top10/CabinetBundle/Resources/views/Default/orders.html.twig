@@ -1,0 +1,80 @@
+{% extends '::layout.html.twig' %}
+
+{% block title %}
+	Заказы{% if ordertype == 'disk' %} на диски{% endif %}{% if ordertype == 'tire' %} на шины{% endif %}
+{% endblock %}
+
+{% block body %}
+    {% set nOrders = pagination.count %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3>
+				Заказы{% if ordertype == 'disk' %} на диски{% endif %}{% if ordertype == 'tire' %} на шины{% endif %}
+			</h3>
+		</div>
+		{% if nOrders != 0 %}
+			<table class="table">
+				{% if nOrders %}
+					<tr>
+						<th>{{ knp_pagination_sortable(pagination, 'Номер заказа', 'o.sapid')|raw }}</th>
+						<th>Ста<wbr>тус за<wbr>ка<wbr>за</th>
+						{% if app.user.id == 1000000 %}<th>Ста<wbr>тус пос<wbr>тав<wbr>ки</th>{% endif %}
+						<th>{{ knp_pagination_sortable(pagination, 'Дата', 'o.date')|raw }}</th>
+						<th>{{ knp_pagination_sortable(pagination, 'Сумма', 'o.price')|raw }}</th>
+						<th style="width: 170px">&nbsp;</th>
+					</tr>
+
+					{% for item in pagination %}
+						<tr>
+							<td>{{item.sapid}}</td>
+							<td>
+								{{item.status.name | raw }}
+								{% if item.status.id == 6 %}
+									<br /><small>Счет-фактура выслана на электронную почту</small>
+								{% endif %}
+							</td>
+							{% if app.user.id == 1000000 %}
+								<td>
+									{% if item.statussupply.name is defined %} {{item.statussupply.name}} {% endif %}
+								</td>
+							{% endif %}
+							
+							<td>{{item.created|date('d.m.Y H:i')}}</td>
+							<td>{{item.price}} руб</td>
+							<td>
+								{% if item.status.id != 6 %}
+									{#<button onclick="location.href='{{ path('order_edit', { 'id':item.id }) }}'" class="ym-button ym-edit orderButton" title="Редактировать">Редактировать</button>#}
+									<a href="{{ path('order_edit', { 'id':item.id }) }}" class="btn btn-default" title="Редактировать">
+										<span class="glyphicon glyphicon-pencil"></span>
+										<span class="hidden-xs">{% if item.status.id == 5 or item.status.id == 6 or item.status.id == 7 %}Просмотреть{% else %}Редактировать{% endif %}</span>
+									</a>
+									{#<button onclick="if( !confirm('Уверены, что хотите удалить?') ) return false; else location.href='{{ path('order_delete', { 'id':item.id }) }}'"  class="ym-button ym-delete orderButton" title="Редактировать">Удалить</button><br />#}
+								{% else %}&nbsp;{% endif %}
+								{#{% if item.sapid %}#}
+								{#<button onclick="location.href='{{ path('order_sendFile', { 'id':item.id, 'type':1 }) }}'"  class="ym-button orderButton ym-email" title="Выслать накладную">Накладная</button>#}
+								{#<button onclick="location.href='{{ path('order_sendFile', { 'id':item.id, 'type':2 }) }}'"  class="ym-button orderButton ym-email" title="Выслать счет-фактуру">Счет фактура</button>#}
+								{#{% endif %}#}
+							</td>
+						</tr>
+					{% endfor %}
+				{% endif %}
+
+			</table>
+		{% else %}
+			<div class="panel-body">
+				<div class="alert alert-info"><p>Заказы  не найдены.</p></div>
+			</div>
+		{% endif %}
+
+		<div class="panel-footer">
+			{# display navigation #}
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	</div>
+{% endblock %}
+
+{% block right_column %}
+	{% include 'Top10CabinetBundle:Default:fixed_cart.html.twig' %}
+	{% include 'Top10CabinetBundle:Form:searchOrders.html.twig' with {'ordertype':ordertype, 'form':filter_order_form} %}
+	{% include 'Top10CabinetBundle:Default:actions.html.twig' %}
+{% endblock right_column %}

@@ -1,0 +1,85 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3>Диски</h3>
+	</div>
+	<div class="panel-body">ООО "Римэкс - Диски"</div>
+	<ul class="list-group">
+		<li class="list-group-item">
+			Номер договора:
+			<strong>{{ user.numberdocDisk }}</strong>
+		</li>
+		<li class="list-group-item">
+			Лимит кредитования:
+			<strong>{% if user.limitcreditDisk %}{{ user.limitcreditDisk }}{% else %}0{% endif %} </strong>руб
+		</li>
+		{% if user.emailmanagerDisk %}
+		<li class="list-group-item">
+				Менеджер:
+				<strong>{{ user.emailmanagerDisk }}</strong>
+		</li>
+		{% endif %}
+		<li class="list-group-item">
+			На счету: <strong>{% if user.accountDisk %}{{ user.accountDisk }}{% else %}0{% endif %} </strong>руб
+		</li>
+		<li class="list-group-item">
+			{% if user.datelastpayDisk %}Дата последнего платежа: <strong>{{ user.datelastpayDisk|date("d.m.Y G:m") }}</strong>{% endif %}
+		</li>
+	</ul>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3>Шины</h3>
+	</div>
+	<div class="panel-body">ООО "Римэкс-Шины"</div>
+	<ul class="list-group">
+		<li class="list-group-item">
+			Номер договора:
+			<strong>{{ user.numberdocTier }}</strong>
+		</li>
+		<li class="list-group-item">
+			Лимит кредитования:
+			<strong>{% if user.limitcreditTier %}{{ user.limitcreditTier }}{% else %}0{% endif %} </strong>руб
+		</li>
+		{% if user.emailmanagerTier %}
+		<li class="list-group-item">
+				Менеджер:
+				<strong>{{ user.emailmanagerTier }}</strong>
+		</li>
+		{% endif %}
+		<li class="list-group-item">
+			На счету: <strong>{% if user.accountTier %}{{ user.accountTier }}{% else %}0{% endif %} </strong>руб
+		</li>
+		<li class="list-group-item">
+			{% if user.datelastpayTier %}
+				Дата последнего платежа: 
+				<strong>{{ user.datelastpayTier|date("d.m.Y G:m") }}</strong>
+			{% endif %}
+		</li>
+	</ul>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3>Данные о клиенте</h3>
+	</div>
+	<ul class="list-group">
+	  <li class="list-group-item">E-mail: <strong>{{ user.email }}</strong></li>
+	  <li class="list-group-item">Партнер: <strong>{{ user.fullName }}</strong></li>
+	  <li class="list-group-item">Телефон: <strong>{{ user.telephone }}</strong></li>
+	  <li class="list-group-item">Фактическое название Компании: <strong>{{user.company}}</strong></li>
+	  <li class="list-group-item">Юр. название Компании: <strong>{{user.companyYur}}</strong></li>
+	  <li class="list-group-item">Город: <strong>{{user.location}}</strong></li>
+	  <li class="list-group-item">Фактический адрес: <strong>{{user.address}}</strong></li>
+	  <li class="list-group-item">ИНН: <strong>{{user.inn}}</strong></li>
+	  <li class="list-group-item">Сфера деятельности: <strong>{{user.scope}}</strong></li>
+	  <li class="list-group-item">Кол-во магазинов: <strong>{{user.shop}}</strong></li>
+	  <li class="list-group-item">Cообщение: <strong>{{user.message}}</strong></li>
+	</ul>
+	<div class="panel-body">
+		<a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">
+			<span class="glyphicon glyphicon-pencil"></span>
+			Редактировать
+		</a>
+	</div>
+</div>

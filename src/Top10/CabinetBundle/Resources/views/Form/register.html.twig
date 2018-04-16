@@ -1,0 +1,119 @@
+<div class="panel-body">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2>Регистрация</h2>
+		</div>
+
+		<div class="well well-lg">
+			{{ form_errors(registerForm) }}
+
+			<form class="form-horizontal" role="form" action="{{ path('fos_user_registration_register') }}" {{ form_enctype(registerForm) }} method="post" >
+
+				<div class="form-group">
+					{{ form_label(registerForm.username, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.username) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.username, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.email, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.email) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.email, {'attr': {'class': 'form-control', 'type':'email'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.companyYur, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.companyYur) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.companyYur, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.company, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.company) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.company, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.location, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.location) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.location, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.address, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.address) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.address, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.inn, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.inn) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.inn, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.scope, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.scope) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.scope, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.shop, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.shop) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.shop, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.telephone, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.telephone) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.telephone, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ form_label(registerForm.message, null, {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+					{{ form_errors(registerForm.message) }}
+					<div class="col-sm-9">
+						{{ form_widget(registerForm.message, {'attr': {'class': 'form-control'}}) }}
+					</div>
+				</div>
+
+				{{ form_widget(registerForm.plainPassword) }}
+				{{ form_widget(registerForm.new) }}
+				{{ form_widget(registerForm._token) }}
+
+				{{ form_rest(registerForm) }}
+
+
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-9">
+						<button type="submit" class="btn btn-default">
+							Отправить заявку
+						</button>
+					</div>
+				</div>
+
+				<div class="alert alert-warning">Поля, отмеченные * , обязательны для заполнения</div>
+			</form>
+		</div>
+	</div>
+</div>

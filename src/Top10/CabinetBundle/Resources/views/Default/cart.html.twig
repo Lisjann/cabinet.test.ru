@@ -1,0 +1,30 @@
+{% extends '::layout.html.twig' %}
+
+{% block right_column %}
+    {{ parent() }}
+{% endblock right_column %}
+
+{% block body %}
+
+	{% if cartDisk is not null and cartDisk is not empty %}
+		<h4>Заказать диски - ООО "Римэкс диски"</h4>
+
+		{% include 'Top10CabinetBundle:Default:cart_product_list.html.twig' with { 'cartType' : cartDisk, 'countType' : countDisk, 'typePagination' : diskPagination, 'type' : 'disk' } %}
+
+	{% endif %}
+
+
+
+
+	{% if cartTire is not null and cartTire is not empty %}
+		<h4>Заказать шины - ООО "Римэкс-шины"</h4>
+		{% include 'Top10CabinetBundle:Default:cart_product_list.html.twig' with { 'cartType' : cartTire, 'countType' : countTire, 'typePagination' : tirePagination, 'type' : 'tire' } %}
+	{% endif %}
+
+	{% if cartTire is null or cartTire is empty %}
+		{% if cartDisk is null or cartDisk is empty %}
+			<div class="alert alert-warning">В корзине ничего нет</div>
+		{% endif %}
+	{% endif %}
+
+{% endblock %}

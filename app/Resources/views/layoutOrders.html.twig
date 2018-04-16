@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Кабинет Оптовика{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <!-- mobile viewport optimisation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    
+    <link href="{{ asset('bundles/cabinet/css/yaml/core/base.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/forms/gray-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/screen/typography.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/yaml/navigation/hlist.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/project.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/jquery.ui.slider.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/jquery.ui.theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/jquery.ui.autocomplete.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/jquery.ui.datepicker.css') }}" rel="stylesheet">
+    
+    <script src="{{ asset('bundles/cabinet/js/jquery-1.7.2.min.js')}}"></script>
+    <script src="{{ asset('bundles/cabinet/js/jquery.ui.core.js')}}"></script>
+    <script src="{{ asset('bundles/cabinet/js/jquery.ui.widget.js')}}"></script>
+    <script src="{{ asset('bundles/cabinet/js/jquery.ui.mouse.js')}}"></script>
+    <script src="{{ asset('bundles/cabinet/js/jquery.ui.slider.js')}}"></script>
+    <script src="{{ asset('bundles/cabinet/js/jquery.ui.autocomplete.js')}}"></script>
+    <script src="{{ asset('bundles/cabinet/js/jquery.ui.position.js')}}"></script>
+    <script src="{{ asset('bundles/cabinet/js/jquery.ui.datepicker.js')}}"></script>
+    <script src="{{ asset('bundles/top10cabinet/js/autoload.js')}}"></script>
+    
+    <!--[if lte IE 7]>
+		<link rel="stylesheet" href="{{ asset('bundles/cabinet/css/yaml/core/iehacks.min.css') }}" type="text/css"/>
+	<![endif]-->
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+<!--div id="site_close">Сайт закрыт, ведуться внутренние работы</div-->
+<header>
+
+	<div class="logo">
+		<a class="logo" href="/"><img src="{{ asset('bundles/cabinet/images/logo.jpg')}}" width="513" height="83" alt="" /></a>
+	</div>
+
+	<nav class="ym-hlist">
+		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+		<ul>
+		  	<li><a href="{{ path('catalog_index', {'f[type]':'disk'}) }}">Каталог дисков</a></li>
+		  	<li><a href="{{ path('catalog_index', {'f[type]':'tire'}) }}">Каталог шин</a></li>
+		</ul>
+		<div class="ym-searchform">
+			Вы вошли как <a href="{{ path('fos_user_profile_show') }}">{{app.user.username}}</a>
+			&nbsp;&nbsp;
+			<a href="{{ path('orders', {'ordertype':'disk'}) }}">Заказы</a>
+		    &nbsp;&nbsp;
+		    <a href="{{ path('payment') }}">График платежей</a>
+		    &nbsp;&nbsp;
+		    <a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+		</div>
+		{% endif %}
+	</nav>
+</header>
+
+	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") == 0 %}
+		<div style="margin:0 10px 20px 10px"><h1>Добро пожаловать в Кабинет Оптовика</h1></div>
+	{% endif %}
+
+{% for key, message in app.session.getFlashes() %}
+	<div class="box {{ key }}">{{ message|trans({}, 'FOSUserBundle') }}</div>
+{% endfor %}
+
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+<div class="ym-column">
+    <div class="ym-col1">
+	    <div class="ym-cbox">
+	    	{% block body %}Ничего нет{% endblock %}
+	    </div>
+    </div>
+    <div class="ym-col3">
+    <div class="ym-cbox">
+    	{% include 'Top10CabinetBundle:Default:fixed_cart.html.twig' %}
+		{% include 'Top10CabinetBundle:Default:message.html.twig' %}
+    	{% include 'Top10CabinetBundle:Form:searchOrders.html.twig' %}
+    </div>
+    </div>
+</div>
+{% else %}
+<div class="ym-grid">
+    <div class="ym-g50 ym-gl">
+	    <div class="ym-gbox">
+		    {% block regform %}{% endblock %}
+	    </div>
+    </div>
+    <div class="ym-g50 ym-gr">
+	    <div class="ym-gbox">
+		    {% block fos_user_content %}{% endblock fos_user_content %}
+	    </div>
+    </div>
+</div>	
+{% endif %}
+	
+<footer>
+	&copy; {{ "now"|date("Y") }} "Точка-маркет"
+</footer>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

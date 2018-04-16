@@ -1,0 +1,12 @@
+{% if cartinfo.disk_quantity or cartinfo.tire_quantity %}
+	{% set quantity = cartinfo.disk_quantity + cartinfo.tire_quantity %}
+{% else %}
+	{% set quantity = 0 %}
+{% endif %}
+
+	<a href="{{ path('cart') }}">
+		<span class="glyphicon glyphicon-shopping-cart">
+		</span><span class="badge">{{quantity}}</span>
+	</a>
+
+

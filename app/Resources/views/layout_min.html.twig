@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Кабинет Оптовика{% endblock %}</title>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <!-- mobile viewport optimisation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    
+    <link href="{{ asset('bundles/cabinet/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+	<link href="{{ asset('bundles/cabinet/bootstrap/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    
+	<link href="{{ asset('bundles/cabinet/css/project.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/cabinet/css/jquery.ui.theme.css') }}" rel="stylesheet">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>	
+    
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/moment-with-locales.min.js') }}"></script>
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/bootstrap.js') }}"></script>
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>
+	<script src="{{ asset('bundles/cabinet/bootstrap/js/ekko-lightbox.js') }}"></script>
+
+    <!--[if lte IE 7]>
+		<link rel="stylesheet" href="{{ asset('bundles/cabinet/css/yaml/core/iehacks.min.css') }}" type="text/css"/>
+	<![endif]-->
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	<!-- Yandex.Metrika counter -->
+	<script type="text/javascript">
+		 (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter40907444 = new Ya.Metrika({ id:40907444, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); 
+	</script>
+	<!-- /Yandex.Metrika counter -->
+
+</head>
+<body class="bodyv-xs">
+	<header>
+		<nav class="navbar navbar-default hidden-xs logo" role="navigation" style="background-color:#fb6d01">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="{{ path('top10_cabinet_default_index') }}">
+						<img src="http://tochka-market.ru/images/tm_white.png{# asset('bundles/cabinet/images/logo.jpg')#}" width="198" height="29" alt="" />
+					</a>
+					<a class="navbar-brand logo-ko" href="{{ path('top10_cabinet_default_index') }}">
+						Кабинет оптовика
+					</a>
+				</div>
+			</div>
+        </nav>
+     </header>
+	 
+	{% block body %}Ничего нет{% endblock %}
+	
+	<footer class="container-fluid">
+		&copy; {{ "now"|date("Y") }} "Точка-маркет"
+    </footer>
+
+    {% block javascripts %}
+    {% endblock %}
+</body>
+</html>

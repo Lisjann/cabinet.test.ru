@@ -1,0 +1,36 @@
+<div class="well well-lg">
+	<form role="form" method="post" action="{{ path('fileProcessing') }}" enctype="multipart/form-data">
+		<div class="form-group">
+			<p>Вы можете сделать заказ, загрузив список товаров в файле xls (xlsx)</p>
+			<ul>
+				<li>1 колонка - артикул товара</li>
+				<li>2 колонка - количество товара</li>
+			</ul>
+			<div><a href="/uploads/zakaz_KO.xls">Скачать образец файла</a></div>
+		</div>
+		<div class="form-group" style="overflow: hidden;">
+			<label>Загрузить</label>
+			<input type="file" name="filexlsx" required="required"/>
+			<!--input type="file" class="btn btn-default" name="filexlsx"/-->
+		</div>
+
+		<div class="form-group">
+			<button 
+				type="submit" 
+				class="btn btn-default" 
+				id="submit" 
+				name="submit"
+				onclick="yaCounter40907444.reachGoal('addcartexcel'); return true;"
+			>
+				Загрузить
+			</button>
+		</div>
+	</form>
+</div>
+
+<div class="well well-lg">
+	<p>xml-файл с остатками для интернет партнеров</p>
+	<div class="ym-fbox-button">
+		<p><a href="http://tochka-market.ru/proga/import/YML.xml" target="_blanck" onclick="yaCounter40907444.reachGoal('yml'); return true;">Посмотреть YML.xml</a></p>
+	</div>
+</div>

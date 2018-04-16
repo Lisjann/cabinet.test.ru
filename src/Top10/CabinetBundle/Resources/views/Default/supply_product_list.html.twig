@@ -1,0 +1,21 @@
+<div class="panel-heading">
+	<h4>Товары в Поставке</h4>
+</div>
+<table id="supply_order_products" class="table hidden-xs">
+	<tr>
+		<th>Товар</th>
+		<th>Кол-во</th>
+		<th>Цена за шт.</th>
+	</tr>
+{% for item in supply.productssupply %}
+	<tr class="position">
+		<td>
+			{{item.productsorders.product.name}} ({{ item.productsorders.product.article }})
+		</td>
+		<td>
+			{{item.quantity}}
+		</td>
+		<td><strong>{{item.productsorders.price}}</strong> руб</td>
+	</tr>
+{% endfor %}
+</table>

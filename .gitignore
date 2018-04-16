@@ -1,0 +1,94 @@
+/app/build/*
+/app/spool/*
+/app/logs/*
+/svn/
+/svn_repos/
+/var/
+.htpasswd
+/web/img/
+/bin/
+/phpexcele/
+/log/
+/web/bundles/
+/app/bootstrap.php.cache
+/app/cache/*
+/app/cache/
+/app/config/parameters.yml
+/app/config/webhook.yml
+/app/logs/*
+!app/cache/.gitkeep
+!app/logs/.gitkeep
+/build/
+/vendor/
+/bin/
+/composer.phar
+*.*~
+Thumbs.db
+.nginxrules
+**/Model/map/*
+**/Model/om/*
+**/Model/**/om/*
+**/Model/**/map/*
+/app/propel/sql/*
+/web/uploads/*
+!web/uploads/.gitkeep
+.idea
+/web/media
+/web/assetic
+/app/export
+/app/import
+tests/_output/*
+app/config/parameters.yml.deploy
+app/config/parameters.yml.forum
+composer.json
+composer.phar
+composer.lock
+SQL.sql
+/www/*
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk

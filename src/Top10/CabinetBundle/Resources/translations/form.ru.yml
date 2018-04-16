@@ -1,0 +1,23 @@
+
+# Filter
+tire: Шины
+disk: Диски
+fasteners: КИТы
+
+Type: Ищем
+Factory: Склад
+Brand: Бренд
+Width: Ширина
+Radius: Диаметр
+
+Numberfixtures: Количество крепежных отверстий
+Wheelbase: Диаметр крепежных отверстий
+Pcd: PCD
+Boom: Вылет (ET)
+Centralhole: Центральное отверстие (DIA)
+Material: Материал
+
+Season: Сезон
+Height: Профиль
+Maxload: Максимальная нагрузка
+Maxspeed: Максимальная скорость

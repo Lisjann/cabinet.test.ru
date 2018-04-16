@@ -1,0 +1,418 @@
+{% extends '::layout.html.twig' %}
+
+{% set user = app.security.getToken().getUser() %}
+
+{% block body %}
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h1>
+				{% if app.request.query.get('f')['type'] is defined and app.request.query.get('f')['type'] == "disk" %}
+						Каталог дисков
+						{% if app.request.query.get('f')['width'] is defined or app.request.query.get('f')['radius'] is defined or app.request.query.get('f')['pcd'] is defined 
+							or app.request.query.get('f')['boom'] is defined or app.request.query.get('f')['centralhole'] is defined
+						%}
+							{% if app.request.query.get('f')['width'] is defined %}<strong>{{ app.request.query.get('f')['width'] }}</strong>{% else %}<strong>..</strong>{% endif %}X{% if app.request.query.get('f')['radius'] is defined %}<strong>{{ app.request.query.get('f')['radius'] }}</strong>{% else %}<strong>..</strong>{% endif %}
+
+							{% if app.request.query.get('f')['pcd']  is defined%}<strong>{{ app.request.query.get('f')['pcd'] }}</strong>{% else %}<strong>..</strong>{% endif %}
+							{% if app.request.query.get('f')['boom']  is defined%}
+								<strong>ET{{ app.request.query.get('f')['boom'] }}</strong>
+							{% else %}<strong>ET..</strong>{% endif %}
+
+							{% if app.request.query.get('f')['centralhole']  is defined%}
+								<strong>{{ app.request.query.get('f')['centralhole'] }}</strong>
+							{% else %}<strong>...</strong>{% endif %}
+						{% endif %}
+				{% elseif app.request.query.get('f')['type'] is defined and app.request.query.get('f')['type'] == "tire" %}
+						Каталог шин
+						{% if app.request.query.get('f')['width']  is defined or app.request.query.get('f')['height']  is defined or app.request.query.get('f')['radius']  is defined%}
+							{% if app.request.query.get('f')['width']  is defined %}<strong>{{ app.request.query.get('f')['width'] }}</strong>{% else %}<strong>...</strong>{% endif %}/{% if app.request.query.get('f')['height']  is defined  %}<strong>{{ app.request.query.get('f')['height'] }}</strong>{% else %}<strong>..</strong>{% endif %}
+							R{% if app.request.query.get('f')['radius']  is defined  %}<strong>{{ app.request.query.get('f')['radius'] }}</strong>{% else %}<strong>..</strong>{% endif %}
+						{% endif %}
+				{% else %}
+					Каталог шин и дисков
+				{% endif %}
+				{% if cntPagination is defined and cntPagination > 0 %}<span class="badge pull-right" style="font-size:14px; background-color:#999">найдено: {{cntPagination}} </span>{% endif %}
+			</h1>
+		</div>
+
+		{% if pagination.count %}
+			<table id="catalog_list" class="table table-hover">
+				<tr>
+					<th>ФО<wbr>ТО</th>
+					<th>КОД</th>
+					<th>{{ knp_pagination_sortable(pagination, 'НАЗВАНИЕ', 'name', {'direction': 'desc'}) }}</th>
+					<!--th class="hidden-xs">Склад </th-->
+					<th nowrap="nowrap">{{ knp_pagination_sortable(pagination, 'КОЛ-ВО', 'quantity') }}</th>
+					<th nowrap="nowrap">{{ knp_pagination_sortable(pagination, 'РЕЗЕРВ', 'quantityres') }}</th>
+					<th class="hidden-xs">{{ knp_pagination_sortable(pagination, 'ЦЕНА', 'price') }}</th>
+					
+					<th>&nbsp;</th>
+				</tr>
+
+				{% for product in pagination %}
+					{# Выбор цены пользователя и маска #}
+					{% set price = product.priceForUser(user) %}
+					{% if price %}
+						{% set price = '<strong>' ~ price ~ '</strong><wbr/> руб.' %}
+					{% else %}
+						{% set price = "-" %}
+					{% endif %}
+
+					{% set full_path_img = null %}
+
+					{# автоматом ставит количество 4 в поле #}
+					{% if product.quantity is defined %}
+						{% set countcart = 1 %}
+
+						{% if product.quantity > 3 %} 
+							{% set countcart = 4 %}
+						{% else %}
+							{% set countcart = product.quantity %}
+						{% endif %}
+					{% endif %}
+
+					{# маска для остатков #}
+					{% set quantity = '<span style="color:#999">нет</span>' %}
+					{% if product.quantity  is defined %}
+						{% if product.quantity > 0 %}
+							{% set quantity = '<strong>' ~ product.quantity ~ '</strong>' %}
+						{% endif %}
+
+						{% if product.quantity > 50 %}
+							{% set quantity = '<strong>> 50</strong>' %}
+						{% endif %}
+					{% endif %}
+
+					{# маска для остатков в резерве #}
+					{% set quantityres = '<span style="color:#999">нет</span>' %}
+					{% if product.quantityres is defined %}
+						{% if product.quantityres > 0 %}
+							{% set quantityres = '<strong style="color:#999">' ~ product.quantityres ~ "</strong>" %}
+						{% endif %}
+
+						{% if product.quantityres > 50 %}
+							{% set quantityres = '<strong style="color:#999">> 50</strong>' %}
+						{% endif %}
+					{% endif %}
+
+					{# выбор картинки по цвету и модели #}
+					{% if product.type == "disk" %}
+						{% set full_path_img = asset('bundles/cabinet/images/noimage_disk.png') %}
+					{% elseif product.type == "tire" %}
+						{% set full_path_img = asset('bundles/cabinet/images/noimage_bus.png') %}
+					{% else %}
+						{% set full_path_img = asset('bundles/cabinet/images/noimage_bus.png') %}
+					{% endif %}
+
+					{% set noColorText = null %}
+					{% if product.model is defined %}
+						{% set i = 0 %}
+						{% if product.model.file is defined %}
+						{% for file in product.model.file %}
+							{% if product.color and file.type %}
+								{% set i = i+1 %}
+								{% if i == 1 %}
+									{% set full_path_img = file.url %}
+									{% set noColorText = 'Цвет на фото может не совподать с цветом диска. Цвет на фото: <strong>' ~ file.type ~ '</strong>' %}
+								{% endif %}
+								{% if file.type == product.color %}
+									{% set full_path_img = file.url %}
+									{% set noColorText = null %}
+								{% endif %}
+							{% else %}
+								{% set full_path_img = file.url %}
+							{% endif %}
+						{% endfor %}
+						{% endif %}
+					{% endif %}
+
+					<tr>
+						<td nowrap="nowrap" style="position:relative">
+							<img src="{{ full_path_img|imagine_filter('thumb') }}" class="media-object" width="70" alt="" />
+							{% if noColorText != null %}
+								<span 
+									class="glyphicon glyphicon-tint noColorText"
+									data-toggle="tooltip"
+									data-placement="bottom"
+									data-html="true"
+									onmouseover="yaCounter40907444.reachGoal('noсolor'); return true;"
+									title="{{ noColorText | raw }}"
+								></span>
+							{% endif %}
+						</td>
+						<td width="150">
+							<p>
+								<img
+									class="article"
+									data-toggle="tooltip"
+									data-placement="bottom"
+									title="код товара Римэкса"
+									src="{{ asset('bundles/cabinet/images/rimeks.png') }}" 
+								/> 
+								<strong onmousedown="yaCounter40907444.reachGoal('article'); return true;">{{product.article}}</strong>
+							</p>
+							{% if product.articleexternal is defined and product.articleexternal != '' %}
+								<p>
+									<img 
+										class="article"
+										data-toggle="tooltip"
+										data-placement="bottom"
+										title="код товара Производителя"
+										src="{{ asset('bundles/cabinet/images/fabbrica.png') }}"
+									/> 
+									<strong onmousedown="yaCounter40907444.reachGoal('articleexternal'); return true;">{{product.articleexternal}}</strong>
+								</p>
+							{% endif %}
+						</td>
+						<td>
+							<p>
+							<a 
+								href="{{ full_path_img }}" 
+								class="productname"
+								onclick="yaCounter40907444.reachGoal('productcard'); return true;"
+								data-toggle="lightbox" 
+								data-gallery="example-gallery"
+								data-width="500"
+								data-title='
+									<p class="text-center">{{product.name}}</p>
+									<p class="text-center" style="font-size:14px">
+										<img
+											class="article"
+											data-toggle="tooltip"
+											data-placement="bottom"
+											title="код товара Римэкса"
+											src="{{ asset('bundles/cabinet/images/rimeks.png') }}" 
+										/>
+										<strong>{{product.article}}</strong>
+										{% if product.articleexternal is defined and product.articleexternal != '' %}
+											&nbsp;&nbsp;&nbsp;<img 
+												class="article"
+												data-toggle="tooltip"
+												data-placement="bottom"
+												title="код товара Производителя"
+												src="{{ asset('bundles/cabinet/images/fabbrica.png') }}"
+											/> 
+											<strong>{{product.articleexternal}}</strong>
+										{% endif %}
+									</p>
+									{% if noColorText != null %}
+										<p class="text-center">
+											<span class="glyphicon glyphicon-tint" style="color:red" title="{{noColorText}}"></span>
+											<span class="text-danger" style="font-size:11px">{{noColorText | raw}}</span>
+											
+										</p>
+									{% endif %}
+								'
+								data-footer='
+									{% if product.quantity  is defined %}
+										<form method="post" action="{{ path('catalog_add_to_cart', {"f": app.request.query.get("f")}) }}">
+											<p class="text-center">
+												Бренд: <strong>{{ product.brand }}</strong>
+											</p>
+											<p class="text-center">
+												{% if product.model.name is defined %}
+													&nbsp;&nbsp;
+													Модель: <strong>{{ product.model.name }}</strong>
+												{% endif %}
+											</p>
+											{% if product.type == 'tire' %}
+												<p class="text-center">
+													<strong>{{ product.width }}</strong>/<strong>{{ product.height }}</strong>
+													R<strong>{{ product.radius }}</strong>
+												</p>
+												{% if product.season is defined and product.season != '' %}
+													<p class="text-center">
+														Сезон:
+														<img 
+															class="article"
+															data-toggle="tooltip"
+															data-placement="bottom"
+															title="{{product.season}}"
+															src="
+																{% if product.season == 'ЗИМА' %}
+																	{{ asset('bundles/cabinet/images/sezon_ico_winter.png') }}
+																{% else %}
+																	{{ asset('bundles/cabinet/images/sezon_ico_summer.png') }}
+																{% endif %}
+															"
+														/> 
+													</p>
+												{% endif %}
+												<p class="text-center">
+													Макс. Нагрузка: <strong>{{ product.maxload }}</strong>
+													&nbsp;&nbsp;
+													Камера: <strong>{{ product.camera }}</strong>
+												</p>
+											{% endif %}
+											{% if product.type == 'disk' %}
+												<p class="text-center">
+													<strong>{{ product.width }}</strong>X<strong>{{ product.radius }}</strong>
+													&nbsp;&nbsp;
+													<strong>{{ product.numberfixtures }}</strong>X<strong>{{ product.wheelbase }}</strong>
+													&nbsp;&nbsp;
+													ET<strong>{{ product.boom }}</strong>
+													&nbsp;&nbsp;
+													<strong>{{ product.centralhole }}</strong>
+												</p>
+												<p class="text-center">
+													{% if product.material is defined and product.material != '' %}
+														Материал:  <strong>{{ product.material }} </strong>
+													{% endif %}
+													{% if product.color is defined and product.color != '' %}
+														&nbsp;&nbsp;
+														Цвет:  <strong>{{ product.color }}</strong>
+													{% endif %}
+												</p>
+												
+											{% endif %}
+											<p class="text-center">
+												На складе: {{ quantity | raw }}&nbsp;&nbsp;
+												В резерве: {{ quantityres | raw }}&nbsp;&nbsp;
+											</p>
+											<p class="text-center">
+												{{ price | raw }}&nbsp;&nbsp;
+												<input type="hidden" value="{{product.id}}" name="product"/>
+												<input type="number" class="form-control" style="width:60px;display:inline;" value="{{ countcart }}" name="count{{product.id}}"/>
+												<button 
+													type="submit"
+													name="in_basket"
+													class="btn btn-default "
+													title="В корзину"
+												>
+													<span class="glyphicon glyphicon-shopping-cart hidden-lg hidden-md hidden-sm"></span>
+													<span class="hidden-xs">В корзину</span>
+												</button>
+											</p>
+										</form>
+									{% endif %}
+								'
+								>
+									{{product.name}}
+								</a>
+								{% if product.season is defined and product.season != '' %}
+									&nbsp;
+									<img 
+										width="15px";
+										class="article"
+										data-toggle="tooltip"
+										data-placement="bottom"
+										title="{{product.season}}"
+										src="
+											{% if product.season == 'ЗИМА' %}
+												{{ asset('bundles/cabinet/images/sezon_ico_winter.png') }}
+											{% else %}
+												{{ asset('bundles/cabinet/images/sezon_ico_summer.png') }}
+											{% endif %}
+										"
+									/>
+								{% endif %}
+								</p>
+								{% if product.quantityinorders is defined and product.quantityinorders > 0 %}
+									<span 
+										class="quantityinorders"
+										data-toggle="tooltip"
+										data-placement="bottom"
+										title="Количество заказанных штук за последний год в Кабинете оптовика"
+									>
+										Всего заказанных: <span class="badge" onmouseover="yaCounter40907444.reachGoal('quantityinorders'); return true;">{{product.quantityinorders}}</span>
+									</span>
+								{% endif %}
+						</td>
+						<!--td class="hidden-xs">
+							{% if product.factory %}
+								<span title="{{product.factory.address}}">{{ product.factory.name }}</span>
+							{% endif %}
+						</td-->
+						<td>
+							{{ quantity | raw }}
+						</td>
+						<td>
+							{{ quantityres | raw }}
+						</td>
+						
+						<td nowrap="nowrap" class="hidden-xs">
+							{{ price | raw }}
+						</td>
+						<td nowrap="nowrap" class="hidden-xs">
+							{% if product.quantity %}
+								<form method="post" action="{{ path('catalog_add_to_cart', {"f": app.request.query.get("f")}) }}">
+									<input type="hidden" value="{{product.id}}" name="product" />
+									<input type="number" class="form-control" style="width: 60px;display:inline;" value="{{ countcart }}" name="count{{product.id}}"/>
+									<button 
+										type="submit"
+										name="in_basket"
+										class="btn btn-default"
+										title="В корзину"
+										onclick="yaCounter40907444.reachGoal('incart'); return true;"
+									>
+										<span class="glyphicon glyphicon-shopping-cart hidden-lg hidden-md" ></span>
+										<span class="hidden-xs hidden-sm">В корзину</span>
+									</button>
+								</form>
+							{% endif %}
+						</td>
+					</tr>
+					<tr class="hidden-lg hidden-md hidden-sm text-right">
+						<td colspan="5" style="border-top:0">
+							{{ price | raw }}
+							{% if product.quantity  is defined %}
+								<form method="post" action="{{ path('catalog_add_to_cart', {"f": app.request.query.get("f")}) }}">
+									<input type="hidden" value="{{product.id}}" name="product"/>
+									<input type="number" class="form-control" style="width:60px;display:inline;" value="{{ countcart }}" name="count{{product.id}}"/>
+									<button 
+										type="submit"
+										name="in_basket"
+										class="btn btn-default"
+										title="В корзину"
+										onclick="yaCounter40907444.reachGoal('incart'); return true;"
+									>
+										<span class="glyphicon glyphicon-shopping-cart hidden-lg hidden-md hidden-sm"></span>
+										<span class="hidden-xs">В корзину</span>
+									</button>
+								</form>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+				
+			</table>
+			<script type="text/javascript">
+				$(document).ready(function ($) {
+					$('.article').tooltip();//объявляем bootstrap title
+					$('.quantityinorders').tooltip();//объявляем bootstrap title
+					$('.noColorText').tooltip();//объявляем bootstrap title
+					//модальное окно картинки
+					$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+						event.preventDefault();
+						$(this).ekkoLightbox();
+					});
+				});
+			</script>
+			
+			<div class="panel-footer">
+				{# display navigation #}
+				{{ knp_pagination_render(pagination, null, {}, {'alignment': 'right'}) }}
+			</div>
+		{% else %}
+			<div class="panel-body">
+				<div class="alert alert-info">Ничего не найдено</div>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
+
+{% block right_column %}
+    {% include 'Top10CabinetBundle:Default:fixed_cart.html.twig' %}
+    {% include 'Top10CabinetBundle:Catalog:filter.html.twig' %}
+    {% include 'Top10CabinetBundle:Catalog:loadFile.html.twig' %}
+	{% include 'Top10CabinetBundle:Default:actions.html.twig' %}
+{% endblock right_column %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var app = app || {};
+        app.filter = true;
+    </script>
+    <script src="{{ asset('/bundles/cabinet/js/Catalog.filter.js')}}"></script>
+{% endblock javascripts %}

@@ -1,0 +1,6 @@
+<div class="well well-lg hidden-xs">
+	{% if cartinfo.disk_quantity %}<b>Диски:</b> {{cartinfo.disk_quantity}} шт на сумму: {{cartinfo.disk_price}} руб<br />{% endif %}
+	{% if cartinfo.tire_quantity %}<b>Шины:</b> {{cartinfo.tire_quantity}} шт на сумму: {{cartinfo.tire_price}} руб<br />{% endif %}
+	<a href="{{ path('cart') }}">Просмотреть товары в корзине</a>
+</div>
+

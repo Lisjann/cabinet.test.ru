@@ -1,0 +1,21 @@
+{{ title }}
+{% set icon = '' %}
+{% if options.class == 'sortable' %}
+	{% set icon = '<span class="glyphicon glyphicon-sort-by-attributes" style="font-size:12px;color:#a5a5a5"></span>' %}
+{% endif %}
+
+{% if options.class == 'sortable' and options.direction is defined and options.direction == 'desc' %}
+	{% set icon = '<span class="glyphicon glyphicon-sort-by-attributes-alt" style="font-size:12px;color:#a5a5a5"></span>' %}
+{% endif %}
+
+{% if options.class == 'asc' %}
+	{% set icon = '<span class="glyphicon glyphicon-sort-by-attributes-alt" style="font-size:12px;"></span>' %}
+{% endif %}
+
+{% if options.class == 'desc' %}
+	{% set icon = '<span class="glyphicon glyphicon-sort-by-attributes" style="font-size:12px;"></span>' %}
+	{% endif %}
+
+<a {% for attr, value in options %}{{ attr }}="{{ value }}"{% endfor %} onclick="yaCounter40907444.reachGoal('productsort'); return true;">
+	{{ icon | raw }}
+</a>

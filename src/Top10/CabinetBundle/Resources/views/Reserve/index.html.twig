@@ -1,0 +1,67 @@
+{% import _self as mini_macro %}
+
+{% extends '::layout.html.twig' %}
+
+{% block body %}
+    <div class="panel panel-default">
+		<div class="panel-heading">
+			<h1>Ваши резервы</h1>
+		</div>
+
+		<ul>
+			<li><a href="{{ path('reserve_index') }}#type14">Резервы по шинам</a></li>
+			<li><a href="{{ path('reserve_index') }}#type41">Резервы по дискам</a></li>
+		</ul>
+		
+		<div class="panel-heading">
+		{% if reserves['tire']|length %}
+			<h3 id="type14">Резерв на шины - ООО "Римэкс-Трейд"</h3>
+			{{ mini_macro.info_table(reserves['tire'], 'type14') }}
+		{% endif %}
+		</div>
+
+		{% if reserves['disk']|length %}
+				<h3 id="type41">Резерв на диски - ООО "Колесный эксперт"</h3>
+			{{ mini_macro.info_table(reserves['disk'], 'type41') }}
+		{% endif %}
+		
+	</div>
+{% endblock body %}
+
+{% block right_column %}
+    {% include 'Top10CabinetBundle:Default:fixed_cart.html.twig' %}
+	{# include 'Top10CabinetBundle:Default:message.html.twig' #}
+    {# include 'Top10CabinetBundle:Catalog:searchArticle.html.twig' #}
+    {% include 'Top10CabinetBundle:Catalog:loadFile.html.twig' %}
+{% endblock right_column %}
+
+{% macro info_table(reserves) %}
+    <table class="table reserves_list">
+        <thead>
+            <tr>
+                <th>Группа материалов</th>
+                <th>Артикул</th>
+                <th>Товар</th>
+                <th>На складе</th>
+                <th>Конечный резерв</th>
+                <th>Объем конечного резерва</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for res in reserves%}
+                <tr>
+                    <td>{{ res.group }}</td>
+                    <td>{{ res.article }}</td>
+                    <td>{{ res.productName }}</td>
+                    <td>
+                        {% if res.product %}
+                            {{ res.product.quantity }}
+                        {% endif %}
+                    </td>
+                    <td>{{ res.reserve }}</td>
+                    <td>{{ res.capacity|number_format(3) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

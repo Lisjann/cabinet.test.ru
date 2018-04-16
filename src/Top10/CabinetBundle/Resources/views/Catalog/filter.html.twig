@@ -1,0 +1,84 @@
+{% from _self import display_select %}
+
+{% set filterOrder = ['type', 'width', 'height', 'radius', 'season', 'pcd', 'boom', 'centralhole', 'material','brand' ] %}
+{% set diskParams = catalogFilter.getParamList('disk') %}
+{% set tireParams = catalogFilter.getParamList('tire') %}
+<div class="well well-lg">
+	<form id="filter-form" class="form-horizontal" role="form" method="GET" action="{{ path('catalog_index') }}">
+		<div id="filter-content">
+			{% for paramName in filterOrder %}
+				{{ display_select(paramName, _context) }}
+			{% endfor %}
+			<div class="form-group" id="filter-prices">
+				<label class="col-sm-4 control-label" >Цена (руб)</label>
+				<div class="col-sm-8">
+					<div class="col-sm-12">
+						<div class="row form-group">
+							<div class="pull-left text">от</div>
+							<div class="pull-left field">
+								{{ form_widget(filterForm['price_from'], {'attr':{'autocomplete':'off', 'class':'form-control'} }) }}
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="row form-group">
+							<div class="pull-left text">до</div>
+							<div class="pull-left field">
+								{{ form_widget(filterForm['price_to'], {'attr':{'autocomplete':'off', 'class':'form-control'} }) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div
+					id="filter-slider"
+					class="noUiSlider"
+					data-limit-bottom="{{ price_range['cmin'] }}"
+					data-limit-top="{{ price_range['cmax'] }}"
+					data-range-bottom="{{ price_range['absmin'] }}"
+					data-range-top="{{ price_range['absmax'] }}"
+				></div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-4 col-sm-8">
+				<button type="submit" class="btn btn-default" id="filter-submit" onclick="yaCounter40907444.reachGoal('filter'); return true;">Найти</button>
+				<a 
+					class="btn btn-default" 
+					href="{% if app.request.get('f')['type'] is defined %}
+							{{ path('catalog_index', { 'f[type]': app.request.get('f')['type'] }) }}
+						  {% else %}
+							{{ path('catalog_index') }}
+						  {% endif %}"
+				>
+					Сбросить
+				</a>
+			</div>
+		</div>
+	</form>
+</div>
+
+{% macro display_select(paramName, context) %}
+    {% set isActive = false %}
+    {% if paramName in context.diskParams %}
+        {% set isActive = context.catalogFilter.type == 'disk' %}
+        {% set class = 'disk-param' ~ (not isActive ? ' hide' : '') %}
+    {% elseif paramName in context.tireParams %}
+        {% set isActive = context.catalogFilter.type == 'tire' %}
+        {% set class = 'tire-param' ~ (not isActive ? ' hide' : '') %}
+    {% else %}
+        {% set isActive = true %}
+        {% set class = 'shared-param' ~ (not isActive ? ' hide' : '') %}
+    {% endif %}
+
+    {% set attr = {'autocomplete':'off'} %}
+    {% set attr = not isActive ? attr|merge({'disabled':'disabled'}) : attr %}
+	{% set attr = attr|merge({'class':'form-control'})%}
+    <div class="form-group {{ class }}">
+        {{ form_label(context.filterForm[paramName], null, { 'label_attr': {'class': 'col-sm-4 control-label'} } ) }}
+		<div class="col-sm-8">
+			{{ form_widget(context.filterForm[paramName], {'attr':attr }) }}
+		</div>
+    </div>
+{% endmacro %}

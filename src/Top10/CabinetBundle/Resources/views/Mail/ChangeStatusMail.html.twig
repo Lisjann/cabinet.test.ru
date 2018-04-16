@@ -1,0 +1,107 @@
+{% if order.supply.id is defined %}
+	<h2>Поставка</h2>
+	{% if order.supply.sapid %}
+		<p>
+			<strong>№ поставки:</strong><span>{{order.supply.sapid}}</span>
+		</p>
+	{% endif %}
+	<p>
+		<strong>Статус поставки:</strong>
+		<span {% if order.supply.statussupply.color is defined %} style="background-color: {{order.supply.statussupply.color}}"{% endif %} >{{ order.supply.statussupply.name | raw }}</span>
+	</p>
+	<h2>Доставка</h2>
+	<p>
+		<strong>Способ доставки:</strong>
+		<span>{{order.supply.deliverytype.name}}</span>
+	</p>
+	<p>
+		<strong>Дата отгрузки:</strong>
+		<span>
+			{{ order.supply.datedo|date('d.m.Y')}}
+		</span>
+	</p>
+	<p>
+		<strong>:Желаемое время отгрузки</strong>
+		<span>
+			{{ order.supply.timedo|date('G:i')}}
+		</span>
+	</p>
+	{% if order.supply.location is defined and order.supply.location != null %}
+		<p>
+			<strong>Город:</strong>
+			<span>{{order.supply.location}}</span>
+		</p>
+	{% endif %}
+	{% if order.supply.address is defined and order.supply.address != null %}
+		<p>
+			<strong>Адрес:</strong>
+			<span>{{order.supply.address}}</span>
+		</p>
+	{% endif %}
+	{% if order.supply.fullname is defined and order.supply.fullname != null %}
+		<p>
+			<strong>Контактное лицо:</strong>
+			<span>{{order.supply.fullname}}</span>
+		</p>
+	{% endif %}
+	{% if order.supply.telephone is defined and order.supply.telephone != null %}
+		<p>
+			<strong>Телефон:</strong>
+			<span>{{order.supply.telephone}}</span>
+		</p>
+	{% endif %}
+	<p>
+		<strong>Компания:</strong>
+		<span>{{order.supply.company}}</span>
+	</p>
+{% endif %}
+
+<h2>Заказ</h2>
+<p><strong>№ заказа:</strong> {{ order.sapid }}</p>
+<p><strong>Статус заказа:</strong> {{ order.status.name | raw }}</p>
+<p><strong>Дата:</strong> {{ order.date|date('d.m.Y H:i:s') }}</p>
+<p><strong>Партнер:</strong> {{ order.user.username }}</p>
+<table cellpadding="2" cellspacing="0" border="1" width="100%">
+	<thead>
+		<tr>
+			<td>Товар</td>
+            <td>Артикул</td>
+			<td>Кол-во</td>
+			<td>Кол. подтверждено</td>
+			<td>Цена, руб.</td>
+			<td>Сумма, руб.</td>
+			<th>Статус</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in order.productsorders %}
+			{% if item.flag == 'edit' %}
+				<tr bgcolor="#a0ffa0">
+			{% elseif item.flag == 'noedit' %}
+				<tr bgcolor="#fd9999">
+			{% elseif item.flag == '' or item.flag == 'consid' or item.flag == 'part' %}
+				<tr bgcolor="#f9f985">
+			{% endif %}
+				<td>{{ item.product.name }}</td>
+                <td>{{ item.product.article }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.quantityaccept }}</td>
+				<td>{{ item.price }}</td>
+				<td>{{ item.quantity * item.price }}</td>
+				<td>
+					{% if item.flag == 'edit' %}
+						<span title="Подтвержден">Подтвержден.</span>
+					{% elseif item.flag == '' or item.flag == 'consid' %}
+						<span title="Отправлен на рассмотрение">Отправлен на рассмотрение.</span>
+					{% elseif item.flag == 'part' %}
+						<span title="Отправлен на рассмотрение">Частично.</span>
+					{% elseif item.flag == 'noedit' %}
+						<span title="Отменен">Заблокирован</span>
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<p><strong>Итого:</strong> {{ order.price }} руб.</p>
+<p><a href="http://cabinet.tochka-market.ru{{ path('order_edit', { 'id':order.id }) }}">Перейти к редактированию заказа</a></p>
