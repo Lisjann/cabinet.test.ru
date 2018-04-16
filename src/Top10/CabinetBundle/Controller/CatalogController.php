@@ -46,6 +46,7 @@ class CatalogController extends Controller
 			'price_range' => $sResult['filterResult']['prices'],
 			'catalogFilter' => $sResult['catalogFilter'],
 			'cartinfo' => $cartManager->get(),
+            'hello' => 'hello',
 		);
 
 		//return $this->redirect($this->generateUrl('homepage'), 301);

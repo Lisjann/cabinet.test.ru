@@ -303,6 +303,7 @@ class DefaultController extends Controller
 	private function createOrder($cart = false, $type, $factory, User $user, $sentmail=1)
 	{
 		//Никогда не выбрасывается
+        /*todo созаем Таск для тестовой ветки */
 		if(!$cart) {
 			throw $this->createNotFoundException('Empty cart for add order.');
 		}
